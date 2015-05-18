@@ -1,5 +1,5 @@
 {
-    "name": "ondrakoupil/tools",
+    "name": "OndraKoupil/Tools",
     "description": "Just a bunch of tools for myself",
     "require-dev": {
         "nette/tester": "^1.4@dev"
@@ -15,7 +15,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "ondrakoupil\\tools\\": "src/"
-        }        
+            "OndraKoupil\\Tools\\": "src/"
+        }
     }
 }
