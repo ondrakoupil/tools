@@ -4,11 +4,28 @@ namespace OndraKoupil\Tools;
 
 class Arrays {
 
-	static function arrayize($value) {
-		// TODO: Force arrayization from objects
+	/**
+	 * Zajistí, aby zadaný argument byl array.
+	 *
+	 * Převede booly nebo nully na array(), pole nechá být, ArrayAccess a Traversable
+	 * také, vše ostatní převede na array(0=>$hodnota)
+	 *
+	 * @param mixed $value
+	 * @param bool $forceArrayFromObject True = Traversable objekty také převádět na array
+	 * @return array|\ArrayAccess|\Traversable
+	 */
+	static function arrayize($value, $forceArrayFromObject = false) {
 		if (is_array($value)) return $value;
 		if (is_bool($value) or $value===null) return array();
-		if ($value instanceof \Traversable or $value instanceof \ArrayAccess) return $value;
+		if ($value instanceof \Traversable) {
+			if ($forceArrayFromObject) {
+				return iterator_to_array($value);
+			}
+			return $value;
+		}
+		if ($value instanceof \ArrayAccess) {
+			return $value;
+		}
 		return array(0=>$value);
 	}
 
