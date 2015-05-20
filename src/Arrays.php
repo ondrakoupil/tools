@@ -399,6 +399,99 @@ class Arrays {
 		);
 	}
 
+	/**
+	 * Porovná, zda jsou hodnoty ve dvou polích stejné. Nezáleží na indexech ani na pořadí prvků v poli.
+	 * @param array $array1
+	 * @param array $array2
+	 * @param bool $strict Používat ===
+	 * @return boolean True = stejné. False = rozdílné.
+	 */
+	static function compareValues($array1, $array2, $strict = false) {
+		if (count($array1) != count($array2)) return false;
 
+		$array1 = array_values($array1);
+		$array2 = array_values($array2);
+		sort($array1, SORT_STRING);
+		sort($array2, SORT_STRING);
+
+		foreach($array1 as $i=>$r) {
+			if ($array2[$i] != $r) return false;
+			if ($strict and $array2[$i] !== $r) return false;
+		}
+
+		return true;
+	}
+
+	/**
+	* Rekurzivní změna kódování libovolného typu proměnné (array, string, atd., kromě objektů).
+	* @param string $from Vstupní kódování
+	* @param string $to Výstupní kódování
+	* @param mixed $array Co překódovat
+	* @param bool $keys Mají se iconvovat i klíče? Def. false.
+	* @param int $checkDepth Tento parametr ignoruj, používá se jako pojistka proti nekonečné rekurzi.
+	* @return mixed
+	*/
+	static function iconv($from, $to, $array, $keys=false, $checkDepth = 0) {
+		if (is_object($array)) {
+			return $array;
+		}
+		if (!is_array($array)) {
+			if (is_string($array)) {
+				return iconv($from,$to,$array);
+			} else {
+				return $array;
+			}
+		}
+		if ($checkDepth>20) return $array;
+		$vrat=array();
+		foreach($array as $i=>$r) {
+			if ($keys) {
+				$i=iconv($from,$to,$i);
+			}
+			$vrat[$i]=self::iconv($from,$to,$r,$keys,$checkDepth+1);
+		}
+		return $vrat;
+	}
+
+	/**
+	 * Vytvoří kartézský součin.
+	 * <code>
+	 * $input = array(
+	 *		"barva" => array("red", "green"),
+	 *		"size" => array("small", "big")
+	 * );
+	 *
+	 * $output = array(
+	 *		[0] => array("barva" => "red", "size" => "small"),
+	 *		[1] => array("barva" => "green", "size" => "small"),
+	 *		[2] => array("barva" => "red", "size" => "big"),
+	 *		[3] => array("barva" => "green", "size" => "big")
+	 * );
+	 *
+	 * </code>
+	 * @param array $input
+	 * @return array
+	 * @see http://stackoverflow.com/questions/6311779/finding-cartesian-product-with-php-associative-arrays
+	 */
+	static function cartesian($input) {
+		$input = array_filter($input);
+
+		$result = array(array());
+
+		foreach ($input as $key => $values) {
+			$append = array();
+
+			foreach($result as $product) {
+				foreach($values as $item) {
+					$product[$key] = $item;
+					$append[] = $product;
+				}
+			}
+
+			$result = $append;
+		}
+
+		return $result;
+	}
 
 }

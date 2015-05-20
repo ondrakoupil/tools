@@ -615,6 +615,117 @@ class ToolsTest extends TestCase {
 
 	}
 
+	function testCompareValues() {
+
+		Assert::false(Arrays::compareValues(
+			array("A"),
+			array("A", "B", "C")
+		));
+
+		Assert::true(Arrays::compareValues(
+			array("A", "B", "C") ,
+			array("A", "B", "C")
+		));
+
+		Assert::true(Arrays::compareValues(
+			array("A", "B", "C") ,
+			array("C", "A", "B")
+		));
+
+		Assert::true(Arrays::compareValues(
+			array("A", "3", "C") ,
+			array("C", 3, "A")
+		));
+
+		Assert::true(Arrays::compareValues(
+			array("A", "", "C") ,
+			array("C", false, "A")
+		));
+
+
+		Assert::false(Arrays::compareValues(
+			array("A", "3", "C") ,
+			array("C", 3, "B"),
+			true
+		));
+
+	}
+
+	function testIconv() {
+
+		$win1250 = iconv("utf-8", "windows-1250", "Příliš žluťoučký kůň");
+		$utf8 = "Příliš žluťoučký kůň";
+
+		$winArray = explode(" ", $win1250);
+		$utfArray = explode(" ", $utf8);
+
+		// Basic conversion
+		Assert::equal($winArray, Arrays::iconv("utf-8", "windows-1250", $utfArray));
+		Assert::equal($utfArray, Arrays::iconv("windows-1250", "utf-8", $winArray));
+		Assert::equal($win1250, implode(" ", Arrays::iconv("utf-8", "windows-1250", Arrays::iconv("windows-1250", "utf-8", $winArray))));
+
+		// Recursive
+		$bigArrayWin = array($winArray, $winArray);
+		$bigArrayUtf = Arrays::iconv("windows-1250", "utf-8", $bigArrayWin);
+
+		Assert::equal("žluťoučký", $bigArrayUtf[0][1]);
+		Assert::equal("kůň", $bigArrayUtf[1][2]);
+
+		// Convert keys
+		$combinedWin = array_combine($winArray, $winArray);
+		$converted = Arrays::iconv("windows-1250", "utf-8", $combinedWin, true);
+		Assert::equal(array_keys($converted), $utfArray);
+		Assert::equal(array_values($converted), $utfArray);
+
+		// Non-array conversions
+		Assert::equal($win1250, Arrays::iconv("utf-8", "windows-1250", $utf8));
+		Assert::equal(array($win1250, 10), Arrays::iconv("utf-8", "windows-1250", array($utf8, 10)));
+
+		$obj = new stdClass();
+		$obj->a = "Žluťoučký kůň";
+		$obj->b = 10;
+		Assert::equal("Žluťoučký kůň", Arrays::iconv("utf-8", "windows-1250", $obj)->a );
+
+	}
+
+
+
+	function testCartesian() {
+
+		// Exact test
+		$numbers = array(100, 256, "245.4");
+		$letters = array("O", "K");
+
+		$array = array(
+			"number" => $numbers,
+			"letter" => $letters
+		);
+
+		$output = Arrays::cartesian($array);
+		$expected = array(
+			array("number" => 100, "letter" => "O"),
+			array("number" => 100, "letter" => "K"),
+			array("number" => 256, "letter" => "O"),
+			array("number" => 256, "letter" => "K"),
+			array("number" => "245.4", "letter" => "O"),
+			array("number" => "245.4", "letter" => "K")
+		);
+
+		Assert::equal($expected, $output);
+
+		// Counts test
+
+		$arr1 = range(1, 5);
+		$arr2 = range(10, 13);
+		$arr3 = range(3, 5);
+
+		$input = array( $arr1, $arr2, $arr3 );
+		$output = Arrays::cartesian($input);
+
+		Assert::equal(count($output), count($arr1) * count($arr2) * count($arr3));
+
+	}
+
 
 }
 
