@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0509ddd1dac87ecf1c68878baa2111e3",
+    "hash": "0caf636a460f00fb002482e0f32d0277",
     "packages": [],
     "packages-dev": [
         {
@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/0e9059c051fd685d76e675efb577840b0bb6a288",
+                "url": "https://api.github.com/repos/nette/tester/zipball/44c9262fe2b63ddd31218f186f165e048ea6a525",
                 "reference": "0e9059c051fd685d76e675efb577840b0bb6a288",
                 "shasum": ""
             },
@@ -62,12 +62,53 @@
                 "unit"
             ],
             "time": "2015-03-27 14:19:31"
+        },
+        {
+            "name": "ondrakoupil/testing-utils",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ondrakoupil/testing-utils.git",
+                "reference": "4c2d2bf14758a9c93251ff2f0634f2bbedceeb89"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ondrakoupil/testing-utils/zipball/4c2d2bf14758a9c93251ff2f0634f2bbedceeb89",
+                "reference": "4c2d2bf14758a9c93251ff2f0634f2bbedceeb89",
+                "shasum": ""
+            },
+            "require-dev": {
+                "nette/tester": "^1.4",
+                "ondrakoupil/tools": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OndraKoupil\\Testing\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ondřej Koupil",
+                    "email": "koupil@optimato.cz"
+                }
+            ],
+            "description": "Some testing utilities",
+            "support": {
+                "source": "https://github.com/ondrakoupil/testing-utils/tree/master",
+                "issues": "https://github.com/ondrakoupil/testing-utils/issues"
+            },
+            "time": "2015-05-22 08:20:32"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "nette/tester": 20
+        "nette/tester": 20,
+        "ondrakoupil/testing-utils": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

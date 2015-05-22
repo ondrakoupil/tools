@@ -219,6 +219,25 @@ class StringsTestCase extends TestCase {
 		Assert::equal("100 TB", Strings::formatSize(1024 * 1024 * 1024 * 1024 * 100, 2));
 	}
 
+	function testToAscii() {
+		Assert::equal("ZlutoUCKy kun!", Strings::toAscii("ŽluťoUČKý kůň!"));
+	}
+
+	function testWebalize() {
+		Assert::equal("zlutoucky-kun", Strings::webalize("ŽluťoUČKý kůň!"));
+		Assert::equal("ZlutoUCKy-kun", Strings::webalize("ŽluťoUČKý kůň!", null, false));
+
+		Assert::equal("zlutoucky-kun", Strings::webalize("ŽluťoUČKý, !-? kůň!"));
+
+		Assert::equal("zlutoucky-kun", Strings::webalize("ŽluťoUČKý. kůň!"));
+		Assert::equal("zlutoucky{-kun!", Strings::webalize("ŽluťoUČKý{,* kůň!,", "!{"));
+	}
+
+	function testSafe() {
+		Assert::equal("zlutoucky-kun.jpg", Strings::safe("žluťoučký kůň.jpg", true));
+		Assert::equal("zlutoucky-kun-jpg", Strings::safe("žluťoučký kůň.jpg", false));
+	}
+
 
 }
 

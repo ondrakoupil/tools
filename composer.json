@@ -2,7 +2,8 @@
     "name": "OndraKoupil/Tools",
     "description": "Just a bunch of tools for myself",
     "require-dev": {
-        "nette/tester": "^1.4@dev"
+        "nette/tester": "^1.4@dev",
+		"ondrakoupil/testing-utils": "dev-master"
     },
     "license": "MIT",
     "authors": [
@@ -17,5 +18,11 @@
         "psr-4": {
             "OndraKoupil\\Tools\\": "src/"
         }
-    }
+    },
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ondrakoupil/testing-utils"
+        }
+    ]
 }

@@ -371,44 +371,60 @@ class Strings {
 	}
 
 	/**
-	 * Převede řetězec na základní alfanumerické znaky a pomlčky [a-z0-9.-]
-	 * <br />Alias pro safe()
+	 * Převede řetězec na základní alfanumerické znaky a pomlčky [a-z0-9.], umožní nechat tečku (vhodné pro jména souborů)
+	 * <br />Alias pro webalize()
 	 * @param string $string
+	 * @param bool $allowDot Povolit tečku?
 	 * @return string
 	 */
-	static function webalize($string) {
-		return self::safe($string);
+	static function safe($string, $allowDot = true) {
+		return self::webalize($string, $allowDot ? "." : "");
 	}
 
 	/**
-	 * Převede řetězec na základní alfanumerické znaky a pomlčky [a-z0-9.-]
-	 * <br />Alias pro webalize()
-	 * @param string $string
-	 * @return string
+	 * Converts to ASCII.
+	 * @param  string  UTF-8 encoding
+	 * @return string  ASCII
+	 * @author Nette Framework
 	 */
-	static function safe($string) {
-		$vrat = $string;
-		$vrat=preg_replace('~(\&[a-zA-Z]+;)~','-',$vrat);
-		$vrat=strip_tags($vrat);
-		$vrat=strtolower($vrat);
-		$puvodni=$vrat;
-		$vysledek="";
-		for ($i=0;$i<strlen($puvodni);$i++) {
-			$znak=substr($puvodni,$i,1);
-			if (strpos("abcdefghijklmnopqrstuvwxyz-_0123456789.",$znak)!==false) $vysledek.=$znak;
+	public static function toAscii($s)
+	{
+		$s = preg_replace('#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{2FF}\x{370}-\x{10FFFF}]#u', '', $s);
+		$s = strtr($s, '`\'"^~', "\x01\x02\x03\x04\x05");
+		if (ICONV_IMPL === 'glibc') {
+			$s = @iconv('UTF-8', 'WINDOWS-1250//TRANSLIT', $s); // intentionally @
+			$s = strtr($s, "\xa5\xa3\xbc\x8c\xa7\x8a\xaa\x8d\x8f\x8e\xaf\xb9\xb3\xbe\x9c\x9a\xba\x9d\x9f\x9e"
+				. "\xbf\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3"
+				. "\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8"
+				. "\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf8\xf9\xfa\xfb\xfc\xfd\xfe\x96",
+				"ALLSSSSTZZZallssstzzzRAAAALCCCEEEEIIDDNNOOOOxRUUUUYTsraaaalccceeeeiiddnnooooruuuuyt-");
+		} else {
+			$s = @iconv('UTF-8', 'ASCII//TRANSLIT', $s); // intentionally @
 		}
-		$vrat=$vysledek;
-		$vrat=str_replace("_","-",$vrat);
-		$bezp=0;
-		while (strpos($vrat,"--")!==false and $bezp<7) {
-			$vrat=str_replace("--","-",$vrat);
-			$bezp++;
-		}
-		if (substr($vrat,0,1)=="-") $vrat=substr($vrat,1);
-		if (substr($vrat,-1)=="-") $vrat=substr($vrat,0,-1);
-		$vrat=self::strtolower($vrat);
-		return $vrat;
+		$s = str_replace(array('`', "'", '"', '^', '~'), '', $s);
+		return strtr($s, "\x01\x02\x03\x04\x05", '`\'"^~');
 	}
+
+
+	/**
+	 * Převede řetězec na základní alfanumerické znaky a pomlčky [a-z0-9.-]
+	 * @param string $s Řetězec, UTF-8 encoding
+	 * @param string $charlist allowed characters jako regexp
+	 * @param bool $lower Zmenšit na malá písmena?
+	 * @return string
+	 * @author Nette Framework
+	 */
+	public static function webalize($s, $charlist = NULL, $lower = TRUE)
+	{
+		$s = self::toAscii($s);
+		if ($lower) {
+			$s = strtolower($s);
+		}
+		$s = preg_replace('#[^a-z0-9' . preg_quote($charlist, '#') . ']+#i', '-', $s);
+		$s = trim($s, '-');
+		return $s;
+	}
+
 
     /**
      * Převede číselnou velikost na textové výjádření v jednotkách velikosti (KB,MB,...)
