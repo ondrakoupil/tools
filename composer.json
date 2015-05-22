@@ -1,5 +1,5 @@
 {
-    "name": "OndraKoupil/Tools",
+    "name": "ondrakoupil/tools",
     "description": "Just a bunch of tools for myself",
     "require-dev": {
         "nette/tester": "^1.4@dev",
