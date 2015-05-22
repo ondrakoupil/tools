@@ -349,4 +349,81 @@ class Strings {
 		return $string;
 	}
 
+	/**
+	* Funkce zlikviduje z řetězce všechno kromě číselných znaků a vybraného desetinného oddělovače.
+	* @param string $string
+	* @param string $decimalPoint
+	* @param string $convertedDecimalPoint Takto lze normalizovat desetinný oddělovač.
+	* @return string
+	*/
+	static function numberOnly($string, $decimalPoint = ".", $convertedDecimalPoint = ".") {
+		$vystup="";
+		for ($i=0;$i<strlen($string);$i++) {
+			$znak=substr($string,$i,1);
+			if (is_numeric($znak)) $vystup.=$znak;
+			else {
+				if ($znak==$decimalPoint) {
+					$vystup.=$convertedDecimalPoint;
+				}
+			}
+		}
+		return $vystup;
+	}
+
+	/**
+	 * Převede řetězec na základní alfanumerické znaky a pomlčky [a-z0-9.-]
+	 * <br />Alias pro safe()
+	 * @param string $string
+	 * @return string
+	 */
+	static function webalize($string) {
+		return self::safe($string);
+	}
+
+	/**
+	 * Převede řetězec na základní alfanumerické znaky a pomlčky [a-z0-9.-]
+	 * <br />Alias pro webalize()
+	 * @param string $string
+	 * @return string
+	 */
+	static function safe($string) {
+		$vrat = $string;
+		$vrat=preg_replace('~(\&[a-zA-Z]+;)~','-',$vrat);
+		$vrat=strip_tags($vrat);
+		$vrat=strtolower($vrat);
+		$puvodni=$vrat;
+		$vysledek="";
+		for ($i=0;$i<strlen($puvodni);$i++) {
+			$znak=substr($puvodni,$i,1);
+			if (strpos("abcdefghijklmnopqrstuvwxyz-_0123456789.",$znak)!==false) $vysledek.=$znak;
+		}
+		$vrat=$vysledek;
+		$vrat=str_replace("_","-",$vrat);
+		$bezp=0;
+		while (strpos($vrat,"--")!==false and $bezp<7) {
+			$vrat=str_replace("--","-",$vrat);
+			$bezp++;
+		}
+		if (substr($vrat,0,1)=="-") $vrat=substr($vrat,1);
+		if (substr($vrat,-1)=="-") $vrat=substr($vrat,0,-1);
+		$vrat=self::strtolower($vrat);
+		return $vrat;
+	}
+
+    /**
+     * Převede číselnou velikost na textové výjádření v jednotkách velikosti (KB,MB,...)
+     * @param $size
+     * @return string
+     */
+    public static function formatSize($size, $decimalPrecision = 2) {
+
+        if ($size < 1024)                           return $size . ' B';
+        elseif ($size < 1048576)                   return round($size / 1024, $decimalPrecision) . ' kB';
+        elseif ($size < 1073741824)                return round($size / 1048576, $decimalPrecision) . ' MB';
+        elseif ($size < 1099511627776)             return round($size / 1073741824, $decimalPrecision) . ' GB';
+        elseif ($size < 1125899906842624)          return round($size / 1099511627776, $decimalPrecision) . ' TB';
+        elseif ($size < 1152921504606846976)       return round($size / 1125899906842624, $decimalPrecision) . ' PB';
+        else return round($size / 1152921504606846976, $decimalPrecision) . ' EB';
+    }
+
 }

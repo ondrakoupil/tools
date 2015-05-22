@@ -200,6 +200,24 @@ class StringsTestCase extends TestCase {
 
 	}
 
+	function testNumberOnly() {
+		Assert::same("10;20", Strings::numberOnly(" a10,20", ",", ";"));
+	}
+
+
+	function testFormatSize() {
+		Assert::equal("1 B", Strings::formatSize(1));
+		Assert::equal("1 kB", Strings::formatSize(1024));
+		Assert::equal("1.5 kB", Strings::formatSize(1024 * 1.5));
+		Assert::equal("1.9 kB", Strings::formatSize(1024 * 1.9));
+		Assert::equal("2 kB", Strings::formatSize(1024 * 1.9, 0));
+		Assert::equal("2 MB", Strings::formatSize(1024 * 1024 * 1.942, 0));
+		Assert::equal("1.94 MB", Strings::formatSize(1024 * 1024 * 1.942, 2));
+		Assert::equal("1.942 MB", Strings::formatSize(1024 * 1024 * 1.942, 3));
+		Assert::equal("1.95 MB", Strings::formatSize(1024 * 1024 * 1.948, 2));
+		Assert::equal("1.26 GB", Strings::formatSize(1024 * 1024 * 1024 * 1.256, 2));
+		Assert::equal("100 TB", Strings::formatSize(1024 * 1024 * 1024 * 1024 * 100, 2));
+	}
 
 
 }
