@@ -30,6 +30,17 @@ class Arrays {
 	}
 
 	/**
+	 * Pokud je pole, převede na řetězec, jinak nechá být
+	 * @param array|mixed $value
+	 * @param string $glue
+	 * @return mixed
+	 */
+	static function dearrayize($value,$glue=", ") {
+		if (is_array($value)) return implode($glue, $value);
+		return $value;
+	}
+
+	/**
 	 * Transformace dvoj(či více)-rozměrných polí či Traversable objektů
 	 * @param array $input Vstupní pole.
 	 * @param mixed $outputKeys Jak mají být tvořeny indexy výstupního pole?

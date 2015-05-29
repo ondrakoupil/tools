@@ -46,6 +46,16 @@ class ToolsTest extends TestCase {
 
 	}
 
+	function testDearrayize() {
+
+		Assert::equal("hello,dolly,this,is,louis", Arrays::dearrayize(array("hello", "dolly", "this", "is", "louis")) );
+		Assert::equal("hello", Arrays::dearrayize(array("hello")) );
+		Assert::equal("hello", Arrays::dearrayize("hello") );
+		Assert::same(2, Arrays::dearrayize(2) );
+		Assert::same("hello+dolly", Arrays::dearrayize(array("hello", "dolly"), "+") );
+
+	}
+
 
 	function testValuesPicker() {
 		$arr=array(
