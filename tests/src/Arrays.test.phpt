@@ -6,66 +6,8 @@ use Tester\Assert;
 use Tester\TestCase;
 
 use OndraKoupil\Tools\Arrays;
-
-// TODO: Udělat z toho samostatný balíček
-class TraversableTestObject implements \Iterator {
-
-	private $i=0;
-	private $maxLength;
-	private $item;
-
-	function __construct($maxLength = 5, $item = true) {
-		$this->maxLength = $maxLength;
-		$this->item = $item;
-	}
-
-	public function current() {
-		if ($this->item === true) {
-			return $this->i;
-		}
-		return $this->item;
-	}
-
-	public function key() {
-		return $this->i;
-	}
-
-	public function next() {
-		return $this->i++;
-	}
-
-	public function rewind() {
-		return $this->i=0;
-	}
-
-	public function valid() {
-		return $this->i < $this->maxLength;
-	}
-}
-
-class ArrayAccessTestObject implements \ArrayAccess, \Countable {
-	private $data;
-
-	public function offsetExists($offset) {
-		return isset($this->data[$offset]);
-	}
-
-	public function offsetGet($offset) {
-		return $this->data[$offset];
-	}
-
-	public function offsetSet($offset, $value) {
-		$this->data[$offset] = $value;
-	}
-
-	public function offsetUnset($offset) {
-		unset($this->data[$offset]);
-	}
-
-	public function count() {
-		return count($this->data);
-	}
-}
+use OndraKoupil\Testing\TraversableTestObject;
+use OndraKoupil\Testing\ArrayAccessTestObject;
 
 class ToolsTest extends TestCase {
 

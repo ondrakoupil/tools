@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0caf636a460f00fb002482e0f32d0277",
+    "hash": "5fe9f757881b2d8af88bdf20b0092af4",
     "packages": [],
     "packages-dev": [
         {
@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tester/zipball/44c9262fe2b63ddd31218f186f165e048ea6a525",
+                "url": "https://api.github.com/repos/nette/tester/zipball/a29a3e8fd3084b411c1bc9057460bce8fccd9b4a",
                 "reference": "0e9059c051fd685d76e675efb577840b0bb6a288",
                 "shasum": ""
             },
@@ -65,21 +65,24 @@
         },
         {
             "name": "ondrakoupil/testing-utils",
-            "version": "dev-master",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ondrakoupil/testing-utils.git",
-                "reference": "ec3bf48f5a02228933a07e2b763cd8a9d374ce8e"
+                "reference": "92e13e1aa5f83bee36cb7c23deb2973da6763ec4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ondrakoupil/testing-utils/zipball/ec3bf48f5a02228933a07e2b763cd8a9d374ce8e",
-                "reference": "ec3bf48f5a02228933a07e2b763cd8a9d374ce8e",
+                "url": "https://api.github.com/repos/ondrakoupil/testing-utils/zipball/92e13e1aa5f83bee36cb7c23deb2973da6763ec4",
+                "reference": "92e13e1aa5f83bee36cb7c23deb2973da6763ec4",
                 "shasum": ""
             },
-            "require-dev": {
+            "require": {
                 "nette/tester": "^1.4",
-                "ondrakoupil/tools": ">=0.0.1"
+                "ondrakoupil/tools": "^0.0.2"
+            },
+            "suggest": {
+                "nette/database": "For creating tests with Nette Database using NetteDatabaseTestCase"
             },
             "type": "library",
             "autoload": {
@@ -98,17 +101,16 @@
             ],
             "description": "Some testing utilities",
             "support": {
-                "source": "https://github.com/ondrakoupil/testing-utils/tree/v0.0.2",
+                "source": "https://github.com/ondrakoupil/testing-utils/tree/v0.0.4",
                 "issues": "https://github.com/ondrakoupil/testing-utils/issues"
             },
-            "time": "2015-05-22 09:27:21"
+            "time": "2015-05-29 07:19:52"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "nette/tester": 20,
-        "ondrakoupil/testing-utils": 20
+        "nette/tester": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
