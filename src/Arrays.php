@@ -494,4 +494,26 @@ class Arrays {
 		return $result;
 	}
 
+    /**
+     * Zjistí, zda má pole pouze číselné indexy
+     * @param array $array
+     * @return bool
+	 * @author Michael Pavlista
+     */
+    public static function isNumeric(array $array) {
+
+        return empty($array) ? TRUE : is_numeric(implode('', array_keys($array)));
+    }
+
+
+    /**
+     * Zjistí, zda je pole asociativní
+     * @param array $array
+     * @return bool
+	 * @author Michael Pavlista
+     */
+    public static function isAssoc(array $array) {
+
+        return empty($array) ? TRUE : !self::isNumeric($array);
+    }
 }

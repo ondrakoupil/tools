@@ -69,17 +69,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ondrakoupil/testing-utils.git",
-                "reference": "4c2d2bf14758a9c93251ff2f0634f2bbedceeb89"
+                "reference": "ec3bf48f5a02228933a07e2b763cd8a9d374ce8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ondrakoupil/testing-utils/zipball/4c2d2bf14758a9c93251ff2f0634f2bbedceeb89",
-                "reference": "4c2d2bf14758a9c93251ff2f0634f2bbedceeb89",
+                "url": "https://api.github.com/repos/ondrakoupil/testing-utils/zipball/ec3bf48f5a02228933a07e2b763cd8a9d374ce8e",
+                "reference": "ec3bf48f5a02228933a07e2b763cd8a9d374ce8e",
                 "shasum": ""
             },
             "require-dev": {
                 "nette/tester": "^1.4",
-                "ondrakoupil/tools": "*"
+                "ondrakoupil/tools": ">=0.0.1"
             },
             "type": "library",
             "autoload": {
@@ -98,10 +98,10 @@
             ],
             "description": "Some testing utilities",
             "support": {
-                "source": "https://github.com/ondrakoupil/testing-utils/tree/master",
+                "source": "https://github.com/ondrakoupil/testing-utils/tree/v0.0.2",
                 "issues": "https://github.com/ondrakoupil/testing-utils/issues"
             },
-            "time": "2015-05-22 08:20:32"
+            "time": "2015-05-22 09:27:21"
         }
     ],
     "aliases": [],

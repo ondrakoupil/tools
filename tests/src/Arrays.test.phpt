@@ -727,6 +727,24 @@ class ToolsTest extends TestCase {
 	}
 
 
+	function testIsNumeric() {
+
+		Assert::true( Arrays::isNumeric( array(1, 2, 3) ) );
+		Assert::true( Arrays::isNumeric( array("hello", "Dolly", 2, 3, 10, "this", "is", "Louis") ) );
+		Assert::true( Arrays::isNumeric( array() ) );
+		Assert::false( Arrays::isNumeric( array( "name" => "One", "number" => 1) ) );
+		Assert::false( Arrays::isNumeric( array( "name" => "One", "number" => 1, 3, 10, "something other") ) );
+
+	}
+
+	function testIsAssoc() {
+		Assert::false( Arrays::isAssoc( array(1, 2, 3) ) );
+		Assert::false( Arrays::isAssoc( array("hello", "Dolly", 2, 3, 10, "this", "is", "Louis") ) );
+		Assert::true( Arrays::isAssoc( array() ) );
+		Assert::true( Arrays::isAssoc( array( "name" => "One", "number" => 1) ) );
+		Assert::true( Arrays::isAssoc( array( "name" => "One", "number" => 1, 3, 10, "something other") ) );
+	}
+
 }
 
 

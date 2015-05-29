@@ -1,7 +1,7 @@
 composer.phar
 vendor/
 /nbproject/
-/test.sh
+/run-tests.sh
 /tests/coverage.*
 /tests/*/output
 
