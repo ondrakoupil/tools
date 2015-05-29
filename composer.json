@@ -18,15 +18,5 @@
         "psr-4": {
             "OndraKoupil\\Tools\\": "src/"
         }
-    },
-	"repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ondrakoupil/testing-utils"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/ondrakoupil/tools"
-        }
-    ]
+    }
 }
