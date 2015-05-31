@@ -82,7 +82,7 @@ class Time {
 				$input = str_replace(" ","",$origInput); // Helps with formats like 13. 5. 2013
 				$input=@strtotime($input);
 				if ($input === false or $input === -1) {
-					throw new \InvalidArgumentException("Invalid input to Tools::convertTime: $origInput");
+					throw new \InvalidArgumentException("Invalid input to Time::convert: $origInput");
 				}
 			}
 		}
