@@ -282,25 +282,44 @@ class Files {
 	 * Pokusí se vytvořit strukturu adresářů v zadané cestě.
 	 * @param string $path
 	 * @return string Vytvořená cesta
-	 * @throws FileException Když už takto pojmenovaný soubor existuje a jde o obyčejný soubor
+	 * @throws FileException Když už takto pojmenovaný soubor existuje a jde o obyčejný soubor nebo když vytváření selže.
 	 */
 	static function createDirectories($path) {
+
 		if (!$path) throw new \InvalidArgumentException("\$path can not be empty.");
+
+		/*
 		$parts=explode("/",$path);
 		$pathPart="";
 		foreach($parts as $i=>$p) {
 			if ($i) $pathPart.="/";
 			$pathPart.=$p;
 			if ($pathPart) {
-				if (file_exists($pathPart) and !is_dir($pathPart)) {
+				if (@file_exists($pathPart) and !is_dir($pathPart)) {
 					throw new FileException("\"$pathPart\" is a regular file!");
 				}
-				if (!file_exists($pathPart)) {
+				if (!(@file_exists($pathPart))) {
 					self::mkdir($pathPart,false);
 				}
 			}
 		}
 		return $pathPart;
+		 *
+		 */
+
+		if (file_exists($path)) {
+			if (is_dir($path)) {
+				return $path;
+			}
+			throw new FileException("\"$path\" is a regular file!");
+		}
+
+		$ret = @mkdir($path, 0777, true);
+		if (!$ret) {
+			throw new FileException("Directory \"$path\ could not be created.");
+		}
+
+		return $path;
 	}
 
 	/**

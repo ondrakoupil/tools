@@ -35,7 +35,7 @@ class Arrays {
 	 * @param string $glue
 	 * @return mixed
 	 */
-	static function dearrayize($value,$glue=", ") {
+	static function dearrayize($value,$glue=",") {
 		if (is_array($value)) return implode($glue, $value);
 		return $value;
 	}
