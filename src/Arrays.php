@@ -527,4 +527,35 @@ class Arrays {
 
         return empty($array) ? TRUE : !self::isNumeric($array);
     }
+
+	/**
+	 * @param array $old
+	 * @param array $new
+	 * @return array
+	 *
+	 * @author Paul's Simple Diff Algorithm v 0.1
+	 * (C) Paul Butler 2007 <http://www.paulbutler.org/>
+     * May be used and distributed under the zlib/libpng license.
+	 */
+	public static function diff($old, $new) {
+		$matrix = array();
+		$maxlen = 0;
+		foreach($old as $oindex => $ovalue){
+			$nkeys = array_keys($new, $ovalue);
+			foreach($nkeys as $nindex){
+				$matrix[$oindex][$nindex] = isset($matrix[$oindex - 1][$nindex - 1]) ?
+					$matrix[$oindex - 1][$nindex - 1] + 1 : 1;
+				if($matrix[$oindex][$nindex] > $maxlen){
+					$maxlen = $matrix[$oindex][$nindex];
+					$omax = $oindex + 1 - $maxlen;
+					$nmax = $nindex + 1 - $maxlen;
+				}
+			}
+		}
+		if($maxlen == 0) return array(array('d'=>$old, 'i'=>$new));
+		return array_merge(
+			self::diff(array_slice($old, 0, $omax), array_slice($new, 0, $nmax)),
+			array_slice($new, $nmax, $maxlen),
+			self::diff(array_slice($old, $omax + $maxlen), array_slice($new, $nmax + $maxlen)));
+	}
 }

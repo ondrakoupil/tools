@@ -105,6 +105,21 @@ class HtmlTestCase extends TestCase {
 
 	}
 
+	function testDiff() {
+
+		$string1 = "Hello world, the Earth says good morning!";
+		$string2 = "Hello starshine, the Earth says hello!";
+
+		$diff = trim(Html::diff($string1, $string2));
+		$expected = "Hello <del>world,</del> <ins>starshine,</ins> the Earth says <del>good morning!</del> <ins>hello!</ins>";
+		Assert::equal($expected, $diff);
+
+		$diff = trim(Html::diff($string1, $string2, "++", "++", "--", "--"));
+		$expected = "Hello --world,-- ++starshine,++ the Earth says --good morning!-- ++hello!++";
+		Assert::equal($expected, $diff);
+
+	}
+
 }
 
 $case = new HtmlTestCase();

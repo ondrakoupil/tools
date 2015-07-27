@@ -697,6 +697,23 @@ class ToolsTest extends TestCase {
 		Assert::true( Arrays::isAssoc( array( "name" => "One", "number" => 1, 3, 10, "something other") ) );
 	}
 
+
+	function testDiff() {
+
+		$array1 = array("x", "a", "b", "c");
+		$array2 = array("a", "d", "b", "c", "y");
+
+		$diff = Arrays::diff($array1, $array2);
+
+		Assert::equal(6, count($diff));
+
+		Assert::equal("a", $diff[1]);
+		Assert::equal("d", $diff[2]["i"][0]);
+		Assert::equal("b", $diff[3]);
+		Assert::equal("c", $diff[4]);
+
+	}
+
 }
 
 

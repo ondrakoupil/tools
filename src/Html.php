@@ -146,5 +146,32 @@ class Html {
 		return htmlentities($input, ENT_QUOTES, "utf-8", $doubleEncode);
 	}
 
+	/**
+	 * Jednoduché zvýraznění změn v řetězci. Pracuje s přesností na jednotlivá slova.
+	 *
+	 * @param string $old
+	 * @param string $new
+	 * @param string $startIns
+	 * @param string $endIns
+	 * @param string $startDel
+	 * @param string $endDel
+	 * @return string
+	 *
+	 * @author Paul's Simple Diff Algorithm v 0.1
+	 * (C) Paul Butler 2007 <http://www.paulbutler.org/>
+     * May be used and distributed under the zlib/libpng license.
+	 */
+	public static function diff($old, $new, $startIns = "<ins>", $endIns = "</ins>", $startDel = "<del>", $endDel = "</del>") {
+		$ret = '';
+		$diff = Arrays::diff(preg_split("/[\s]+/", $old), preg_split("/[\s]+/", $new));
+		foreach($diff as $k){
+			if(is_array($k))
+				$ret .= (!empty($k['d'])?$startDel.implode(' ',$k['d']).$endDel." ":'').
+					(!empty($k['i'])?$startIns.implode(' ',$k['i']).$endIns." ":'');
+			else $ret .= $k . ' ';
+		}
+		return $ret;
+	}
+
 
 }
