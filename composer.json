@@ -3,7 +3,7 @@
     "description": "Just a bunch of tools for myself",
     "require-dev": {
         "nette/tester": "^1.4@dev",
-		"ondrakoupil/testing-utils": "^0.0.7"
+		"ondrakoupil/testing-utils": "~0.0.7"
     },
     "license": "MIT",
     "authors": [
