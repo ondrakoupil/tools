@@ -714,6 +714,94 @@ class ToolsTest extends TestCase {
 
 	}
 
+	function testIndexByKey() {
+
+		// Standard run
+
+		$input = array(
+			array("id" => 1, "name" => "One"),
+			array("id" => 10, "name" => "Ten"),
+			array("id" => 100, "name" => "Hundred"),
+		);
+
+		$output = Arrays::indexByKey($input, "id");
+
+		Assert::same(array(
+			1 => array("id" => 1, "name" => "One"),
+			10 => array("id" => 10, "name" => "Ten"),
+			100 => array("id" => 100, "name" => "Hundred")
+		), $output);
+
+
+
+		// Invalid input
+		Assert::exception(function () {
+			Arrays::indexByKey("Normal string", "id");
+		}, 'InvalidArgumentException');
+
+
+		// Some input objects does not have required property
+
+		$input = array(
+			array("id" => 1, "name" => "One"),
+			array("id" => 10, "name" => "Ten"),
+			array("name" => "Hundred"),
+		);
+
+		$output = Arrays::indexByKey($input, "id");
+
+		Assert::same(array(
+			1 => array("id" => 1, "name" => "One"),
+			10 => array("id" => 10, "name" => "Ten"),
+			2 => array("name" => "Hundred")
+		), $output);
+
+
+		$input = array(
+			array("id" => 1, "name" => "One"),
+			array("id" => 10, "name" => "Ten"),
+			16 => array("name" => "Hundred"),
+		);
+
+		$output = Arrays::indexByKey($input, "id");
+
+		Assert::same(array(
+			1 => array("id" => 1, "name" => "One"),
+			10 => array("id" => 10, "name" => "Ten"),
+			16 => array("name" => "Hundred")
+		), $output);
+		
+
+		// Some input objects are not arrays/objects - owerwrite must be done well
+		$input = array(
+			2 => "xxx",
+			array("id" => 2, "name" => "Two"),
+			array("id" => 10, "name" => "Ten")
+		);
+
+		$output = Arrays::indexByKey($input, "id");
+
+		Assert::same(array(
+			2 => array("id" => 2, "name" => "Two"),
+			10 => array("id" => 10, "name" => "Ten")
+		), $output);
+
+
+		$input = array(
+			array("id" => 2, "name" => "Two"),
+			array("id" => 10, "name" => "Ten"),
+			2 => "xxx"
+		);
+
+		$output = Arrays::indexByKey($input, "id");
+
+		Assert::same(array(
+			2 => array("id" => 2, "name" => "Two"),
+			10 => array("id" => 10, "name" => "Ten")
+		), $output);
+
+	}
+
 }
 
 

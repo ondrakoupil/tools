@@ -201,6 +201,40 @@ class Arrays {
 	}
 
 	/**
+	 * Zadané dvourozměrné pole nebo traversable objekt přeindexuje tak, že jeho jednotlivé indexy
+	 * budou tvořeny určitým prvkem nebo public vlastností z každého prvku.
+	 *
+	 * Pokud některý z prvků vstupního pole neobsahuje $keyName, zachová se jeho původní index.
+	 *
+	 * @param array|\Traversable $input Vstupní pole/objekt
+	 * @param string $keyName Podle čeho indexovat
+	 * @return array
+	 */
+	static public function indexByKey($input, $keyName) {
+		if (!is_array($input) and !($input instanceof \Traversable)) {
+			throw new \InvalidArgumentException("Given argument must be an array or traversable object.");
+		}
+
+		$returnedArray = array();
+
+		foreach($input as $index => $f) {
+			if (is_array($f)) {
+				$key = array_key_exists($keyName, $f) ? $f[$keyName] : $index;
+				$returnedArray[$key] = $f;
+			} elseif (is_object($f)) {
+				$key = property_exists($f, $keyName) ? $f->$keyName : $index;
+				$returnedArray[$key] = $f;
+			} else {
+				if (!isset($returnedArray[$index])) {
+					$returnedArray[$index] = $f;
+				}
+			}
+		}
+
+		return $returnedArray;
+	}
+
+	/**
 	 * Zruší z pole všechny výskyty určité hodnoty.
 	 * @param array $dataArray
 	 * @param mixed $valueToDelete Nesmí být null!
