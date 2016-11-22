@@ -50,8 +50,8 @@ class Files {
 	 * Jméno souboru, ale bez přípony.
 	 *
 	 * `/var/www/vhosts/somefile.txt` => `somefile`
-	 * @param type $filename
-	 * @return type
+	 * @param string $filename
+	 * @return string
 	 */
 	static function filenameWithoutExtension($filename) {
 		$filename=self::filename($filename);
@@ -214,6 +214,9 @@ class Files {
 	 */
 	static function safeName($filename,$unsafeExtensions=null,$safeExtension="txt") {
 		if ($unsafeExtensions===null) $unsafeExtensions=array("php","phtml","inc","php3","php4","php5");
+		if ($filename[0] == '.') {
+			$filename = substr($filename, 1);
+		}
 		$extension=self::extension($filename, "l");
 		if (in_array($extension, $unsafeExtensions)) {
 			$extension=$safeExtension;
