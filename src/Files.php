@@ -217,6 +217,7 @@ class Files {
 		if ($filename[0] == '.') {
 			$filename = substr($filename, 1);
 		}
+		$filename = str_replace(DIRECTORY_SEPARATOR, '-', $filename);
 		$extension=self::extension($filename, "l");
 		if (in_array($extension, $unsafeExtensions)) {
 			$extension=$safeExtension;
@@ -226,7 +227,7 @@ class Files {
 		if (preg_match('~^(.*)[-_]+$~',$name,$partsName)) {
 			$name=$partsName[1];
 		}
-		if (preg_match('~^[-_](.*)$~',$name,$partsName)) {
+		if (preg_match('~^[-_]+(.*)$~',$name,$partsName)) {
 			$name=$partsName[1];
 		}
 		$ret=$name;

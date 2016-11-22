@@ -72,6 +72,7 @@ class FilesTest extends FilesTestCase {
 		Assert::equal("evilfile.doc", Files::safeName("EvilFile.jpg",array("png","jpg"),"doc"));
 		Assert::equal("htaccess", Files::safeName(".htaccess"));
 		Assert::equal("htaccess.txt", Files::safeName(".htaccess.php"));
+		Assert::equal("go-somewhere-else.png", Files::safeName("../../go/somewhere/else.png"));
 	}
 
 	function testAddBeforeExtension() {
