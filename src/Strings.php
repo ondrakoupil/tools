@@ -189,7 +189,8 @@ class Strings {
 			$escapeFunction = "\\OndraKoupil\\Tools\\Html::escape";
 		}
 		$arrayMode = is_array($valuesArray);
-		$string = \preg_replace_callback('~'.preg_quote($entityDelimiter).'(['.$entityNameChars.']+)'.preg_quote($entityDelimiter).'~i', function($found) use ($valuesArray, $escapeFunction, $arrayMode) {
+		$arrayAccessMode = (!is_array($valuesArray) and $valuesArray instanceof ArrayAccess);
+		$string = \preg_replace_callback('~'.preg_quote($entityDelimiter).'(['.$entityNameChars.']+)'.preg_quote($entityDelimiter).'~i', function($found) use ($valuesArray, $escapeFunction, $arrayMode, $arrayAccessMode) {
 			if ($arrayMode and key_exists($found[1], $valuesArray)) {
 				$v = $valuesArray[$found[1]];
 				if ($escapeFunction) {
@@ -197,9 +198,18 @@ class Strings {
 				}
 				return $v;
 			}
-			if (!$arrayMode) {
+			if ($arrayAccessMode) {
 				if (isset($valuesArray[$found[1]])) {
 					$v = $valuesArray[$found[1]];
+					if ($escapeFunction) {
+						$v = call_user_func_array($escapeFunction, array($v));
+					}
+					return $v;
+				}
+			}
+			if (!$arrayAccessMode and !$arrayMode) {
+				if (property_exists($valuesArray, $found[1])) {
+					$v = $valuesArray->{$found[1]};
 					if ($escapeFunction) {
 						$v = call_user_func_array($escapeFunction, array($v));
 					}

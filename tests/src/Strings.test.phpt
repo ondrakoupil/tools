@@ -138,6 +138,15 @@ class StringsTestCase extends TestCase {
 		$repl = Strings::replaceEntities($str, $arrayObject);
 		Assert::equal("Lorem bar 10 %c% %b %c ipsum !a!", $repl);
 
+		$obj = new stdClass();
+		$obj->a = 'foo';
+		$obj->c = 100;
+
+		$repl = Strings::replaceEntities($str, $obj);
+		Assert::equal("Lorem foo %b% 100 %b %c ipsum !a!", $repl);
+
+
+
 	}
 
 	function testParsePhpNumber() {
