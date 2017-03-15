@@ -95,10 +95,10 @@ class HtmlTestCase extends TestCase {
 
 	function testEscape() {
 
-		$string = "Tag <b class='some\"> S&W &amp; &gt; hello";
+		$string = "Tag ŘŘ <b class='some\"> S&W &amp; &gt; hello";
 
-		$escaped = "Tag &lt;b class=&#039;some&quot;&gt; S&amp;W &amp; &gt; hello";
-		$doubleEscaped = "Tag &lt;b class=&#039;some&quot;&gt; S&amp;W &amp;amp; &amp;gt; hello";
+		$escaped = "Tag ŘŘ &lt;b class=&#039;some&quot;&gt; S&amp;W &amp; &gt; hello";
+		$doubleEscaped = "Tag ŘŘ &lt;b class=&#039;some&quot;&gt; S&amp;W &amp;amp; &amp;gt; hello";
 
 		Assert::equal($escaped, Html::escape($string));
 		Assert::equal($doubleEscaped, Html::escape($string, true));

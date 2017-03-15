@@ -143,7 +143,7 @@ class Html {
 	 * @return string
 	 */
 	static function escape($input, $doubleEncode = false) {
-		return htmlentities($input, ENT_QUOTES, "utf-8", $doubleEncode);
+		return htmlspecialchars($input, ENT_QUOTES, "utf-8", $doubleEncode);
 	}
 
 	/**

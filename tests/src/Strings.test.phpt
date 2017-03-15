@@ -132,18 +132,18 @@ class StringsTestCase extends TestCase {
 
 	function testReplaceEntitesWithObject() {
 
-		$str = "Lorem %a% %b% %c% %b %c ipsum !a!";
+		$str = "Lořém %a% %b% %c% %b %c ipsum !a!";
 
-		$arrayObject = new ArrayAccessTestObject(array('a' => 'bar', 'b' => 10));
+		$arrayObject = new ArrayAccessTestObject(array('a' => 'bař', 'b' => 10));
 		$repl = Strings::replaceEntities($str, $arrayObject);
-		Assert::equal("Lorem bar 10 %c% %b %c ipsum !a!", $repl);
+		Assert::equal("Lořém bař 10 %c% %b %c ipsum !a!", $repl);
 
 		$obj = new stdClass();
-		$obj->a = 'foo';
+		$obj->a = 'fÁČo';
 		$obj->c = 100;
 
 		$repl = Strings::replaceEntities($str, $obj);
-		Assert::equal("Lorem foo %b% 100 %b %c ipsum !a!", $repl);
+		Assert::equal("Lořém fÁČo %b% 100 %b %c ipsum !a!", $repl);
 
 
 
