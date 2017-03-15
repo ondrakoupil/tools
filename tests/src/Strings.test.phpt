@@ -8,6 +8,7 @@
 
 require '../bootstrap.php';
 
+use OndraKoupil\Testing\ArrayAccessTestObject;
 use \Tester\Assert;
 use \Tester\TestCase;
 
@@ -127,6 +128,15 @@ class StringsTestCase extends TestCase {
 		$repl = Strings::replaceEntities($str, array("a" => 2.8, "c" => 10.4), "round");
 		Assert::equal("Lorem 3 %b% 10", $repl);
 
+	}
+
+	function testReplaceEntitesWithObject() {
+
+		$str = "Lorem %a% %b% %c% %b %c ipsum !a!";
+
+		$arrayObject = new ArrayAccessTestObject(array('a' => 'bar', 'b' => 10));
+		$repl = Strings::replaceEntities($str, $arrayObject);
+		Assert::equal("Lorem bar 10 %c% %b %c ipsum !a!", $repl);
 
 	}
 

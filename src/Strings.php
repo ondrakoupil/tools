@@ -2,6 +2,8 @@
 
 namespace OndraKoupil\Tools;
 
+use ArrayAccess;
+
 class Strings {
 
 	/**
@@ -176,25 +178,37 @@ class Strings {
 	/**
 	 * Nahradí entity v řetězci hodnotami ze zadaného pole.
 	 * @param string $string
-	 * @param array $valuesArray
+	 * @param array|ArrayAccess $valuesArray
 	 * @param callback $escapeFunction Funkce, ktrsou se prožene každá nahrazená entita (např. kvůli escapování paznaků). Defaultně Html::escape()
 	 * @param string $entityDelimiter Jeden znak
 	 * @param string $entityNameChars Rozsah povolených znaků v názvech entit
-	 * @return type
+	 * @return string
 	 */
 	static function replaceEntities($string, $valuesArray, $escapeFunction = "!!default", $entityDelimiter = "%", $entityNameChars = 'a-z0-9_-') {
 		if ($escapeFunction === "!!default") {
 			$escapeFunction = "\\OndraKoupil\\Tools\\Html::escape";
 		}
-		$string = \preg_replace_callback('~'.preg_quote($entityDelimiter).'(['.$entityNameChars.']+)'.preg_quote($entityDelimiter).'~i', function($found) use ($valuesArray, $escapeFunction) {
-			if (key_exists($found[1], $valuesArray)) {
+		$arrayMode = is_array($valuesArray);
+		$string = \preg_replace_callback('~'.preg_quote($entityDelimiter).'(['.$entityNameChars.']+)'.preg_quote($entityDelimiter).'~i', function($found) use ($valuesArray, $escapeFunction, $arrayMode) {
+			if ($arrayMode and key_exists($found[1], $valuesArray)) {
 				$v = $valuesArray[$found[1]];
 				if ($escapeFunction) {
 					$v = call_user_func_array($escapeFunction, array($v));
 				}
 				return $v;
 			}
+			if (!$arrayMode) {
+				if (isset($valuesArray[$found[1]])) {
+					$v = $valuesArray[$found[1]];
+					if ($escapeFunction) {
+						$v = call_user_func_array($escapeFunction, array($v));
+					}
+					return $v;
+				}
+			}
+
 			return $found[0];
+
 		}, $string);
 
 		return $string;
