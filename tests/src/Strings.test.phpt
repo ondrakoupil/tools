@@ -102,6 +102,29 @@ class StringsTestCase extends TestCase {
 	function testShorten() {
 		$str = "Jeďňó ďřúhé třetí čtvrté slovo";
 		Assert::equal("Jeďňó ďřúhé", Strings::shorten($str, 13, ""));
+
+		$str2 = "One two three four five six seven eight";
+		Assert::equal("One two", Strings::shorten($str2, 7, ""));
+		Assert::equal("One two", Strings::shorten($str2, 8, ""));
+		Assert::equal("One two", Strings::shorten($str2, 9, ""));
+		Assert::equal("One two", Strings::shorten($str2, 10, ""));
+		Assert::equal("One two", Strings::shorten($str2, 11, ""));
+		Assert::equal("One two", Strings::shorten($str2, 12, ""));
+		Assert::equal("One two three", Strings::shorten($str2, 13, ""));
+		Assert::equal("One two three", Strings::shorten($str2, 14, ""));
+		Assert::equal("One two three", Strings::shorten($str2, 15, ""));
+		Assert::equal("One two three", Strings::shorten($str2, 16, ""));
+		Assert::equal("One two three", Strings::shorten($str2, 17, ""));
+		Assert::equal("One two three four", Strings::shorten($str2, 19, ""));
+		Assert::equal("One two three four", Strings::shorten($str2, 20, ""));
+
+		Assert::equal($str2, Strings::shorten($str2, 1000, "..."));
+
+		Assert::equal("One twoxxx", Strings::shorten($str2, 7, "xxx"));
+
+		$str3 = "<b>One two</b> three four";;
+		Assert::equal("One two...", Strings::shorten($str3, 8, "..."));
+
 	}
 
 	function testReplaceEntities() {
@@ -257,6 +280,10 @@ class StringsTestCase extends TestCase {
 		Assert::equal("zlutoucky-kun-jpg", Strings::safe("žluťoučký kůň.jpg", false));
 	}
 
+	function testSpecChars() {
+		$input = "Toto <b style='url:(\"some\")'>je tučně & hezky";
+		Assert::equal("Toto &lt;b style=&#039;url:(&quot;some&quot;)&#039;&gt;je tučně &amp; hezky", Strings::specChars($input));
+	}
 
 }
 

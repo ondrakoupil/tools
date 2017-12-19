@@ -66,15 +66,6 @@ class ToolsTest extends TestCase {
 			"e"=>array("letter"=>"A","number"=>false)
 		);
 
-		// TODO:
-	//		Testing\TestTools::assertArrayEqual(array("A","B"), Tools::arrayValuePicker($arr, "letter"));
-	//		Testing\TestTools::assertArrayEqual(array(1,3,"X",false), Tools::arrayValuePicker($arr, "number"));
-	//
-	//		Testing\TestTools::assertArrayEqual(
-	//			array("A"),
-	//			Tools::arrayValuePicker($arr, "letter", array("B"))
-	//		);
-
 		Assert::equal(array("A","B"), Arrays::valuePicker($arr, "letter"));
 		Assert::equal(array(1,"X",3,false), Arrays::valuePicker($arr, "number"));
 

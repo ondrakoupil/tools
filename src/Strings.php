@@ -131,28 +131,24 @@ class Strings {
 		$text=trim($text);
 		if ($ending===true) $ending="&hellip;";
 
-		if (self::strlen($text)<=$length) return $text;
-		if (!$ignoreWords) {
-			$kdeRezat=$length-4;
-			if ($kdeRezat<0) $kdeRezat=0;
-			$konecTextu=self::substr($text,$kdeRezat);
-			$rozdelovace='\s\-_:."\'&/\(?!\)';
-			$match=preg_match('~^([^'.$rozdelovace.']*)['.$rozdelovace.'$]~m',$konecTextu,$casti);
-			$kdeRiznout=$length;
-			if ($match) {
-				$kdeRiznout=$kdeRezat+self::strlen($casti[1]);
+		$needsTrim = (self::strlen($text) > $length);
+		if (!$needsTrim) {
+			return $text;
+		}
+
+		$hardTrimmed = self::substr($text, 0, $length);
+		$nextChar = self::substr($text, $length, 1);
+		if (!preg_match('~[\s.,/\-]~', $nextChar)) {
+			$endingRemains = preg_match('~[\s.,/\-]([^\s.,/\-]*)$~', $hardTrimmed, $foundParts);
+			if ($endingRemains) {
+				$endingLength = self::strlen($foundParts[1]);
+				$hardTrimmed = self::substr($hardTrimmed, 0, -1 * $endingLength - 1);
 			}
-		} else {
-			$kdeRiznout = $length - self::strlen($ending);
-			if ($kdeRiznout < 0) $kdeRiznout = 0;
-		}
-		$vrat= self::substr($text,0,$kdeRiznout).$ending;
-
-		if ($stripHtml) {
-			$vrat=self::nl2br($vrat);
 		}
 
-		return $vrat;
+		$hardTrimmed .= $ending;
+
+		return $hardTrimmed;
 	}
 
 	/**
@@ -465,5 +461,17 @@ class Strings {
         elseif ($size < 1152921504606846976)       return round($size / 1125899906842624, $decimalPrecision) . ' PB';
         else return round($size / 1152921504606846976, $decimalPrecision) . ' EB';
     }
+
+	/**
+	 * Ošetření paznaků v HTML kódu
+	 *
+	 * @param string $input
+	 * @param bool $doubleEncode
+	 *
+	 * @return string
+	 */
+    public static function specChars($input, $doubleEncode = false) {
+    	return htmlspecialchars($input, ENT_QUOTES, 'utf-8', $doubleEncode);
+	}
 
 }
