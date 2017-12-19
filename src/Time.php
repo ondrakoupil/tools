@@ -2,6 +2,8 @@
 
 namespace OndraKoupil\Tools;
 
+use DateInterval;
+
 class Time {
 
 	/**
@@ -33,6 +35,11 @@ class Time {
 	 * Formát času jako string "H:i:s"
 	 */
 	const MYSQL_TIME = "H:i:s";
+
+	/**
+	 * Formát času vhodný pro posílání do JS aplikací
+	 */
+	const JSON = 'c';
 
 
 
@@ -109,11 +116,11 @@ class Time {
 			return "dnes v ".$time->format("H.i");
 		}
 		$time2=clone $time;
-		if ($time2->add(new \DateInterval("P1D"))->format("Ymd")==$today) {
+		if ($time2->add(new DateInterval("P1D"))->format("Ymd")==$today) {
 			return "včera v ".$time->format("H.i");
 		}
 		$time2=clone $time;
-		if ($time2->add(new \DateInterval("P2D"))->format("Ymd")==$today) {
+		if ($time2->add(new DateInterval("P2D"))->format("Ymd")==$today) {
 			return "předevčírem v ".$time->format("H.i");
 		}
 		if ($time->format("Y")==date("Y")) {
@@ -148,7 +155,14 @@ class Time {
 	 * @return int 0 = pracovní den. 1 = svátek. 2 = víkend (if $weekends)
 	 */
 	static function holiday($time, $weekends = true) {
+
 		$date = self::convert($time, self::PHP);
+
+		if ($weekends) {
+			$w = $date->format("w");
+			if ($w == 0 or $w == 6) return 2;
+		}
+
 		$day = $date->format("dm");
 		if ($day == "0101" or $day == "0105" or $day == "0805" or $day == "0507" or $day == "0607"
 			 or $day == "2809" or $day == "2810" or $day == "1711" or $day == "2412" or $day == "2512" or $day == "2612") {
@@ -163,11 +177,6 @@ class Time {
 			return 1;
 		}
 
-		if ($weekends) {
-			$w = $date->format("w");
-			if ($w == 0 or $w == 6) return 2;
-		}
-
 		return 0;
 	}
 
@@ -178,7 +187,7 @@ class Time {
 	 * @param DateInterval $d
 	 * @return int
 	 */
-	static function convertInterval(\DateInterval $d) {
+	static function convertInterval(DateInterval $d) {
 		$i = 0;
 		$i += $d->s;
 		$i += $d->i * self::MINUTE;
