@@ -285,6 +285,25 @@ class StringsTestCase extends TestCase {
 		Assert::equal("Toto &lt;b style=&#039;url:(&quot;some&quot;)&#039;&gt;je tučně &amp; hezky", Strings::specChars($input));
 	}
 
+	function testRandomString() {
+		$str = Strings::randomString(23);
+		Assert::same(23, strlen($str));
+		Assert::same(preg_match('~^[0-9A-Za-z]{23}$~', $str), 1);
+
+		$str = Strings::randomString(57, true);
+		Assert::same(57, strlen($str));
+		Assert::same(preg_match('~^[0-9a-z]{57}$~', $str), 1);
+
+		$str = Strings::randomString(1, false);
+		Assert::same(1, strlen($str));
+		Assert::same(preg_match('~^[0-9a-zA-Z]$~', $str), 1);
+
+		$str = Strings::randomString(2, false);
+		Assert::same(2, strlen($str));
+		Assert::same(preg_match('~^[0-9a-zA-Z]{2}$~', $str), 1);
+
+	}
+
 }
 
 

@@ -474,4 +474,29 @@ class Strings {
     	return htmlspecialchars($input, ENT_QUOTES, 'utf-8', $doubleEncode);
 	}
 
+	/**
+	 * Vygeneruje náhodný alfanumerický řetězec zadané délky
+	 *
+	 * @param int $length
+	 * @return string Skládá se z [a-zA-Z0-9] nebo [a-z0-9] při $lowercase === true
+	 */
+	public static function randomString($length, $lowercase = false) {
+		$bytesLength = ceil($length * 3/4) + 1;
+		$randomBytes = openssl_random_pseudo_bytes($bytesLength);
+		$hex = base64_encode($randomBytes);
+		$hex = preg_replace('~[/+=]~', '', $hex);
+		$len = strlen($hex);
+		if ($len > $length) {
+			$hex = substr($hex, 0, $length);
+		}
+		if ($len < $length) {
+			$hex .= self::randomString($length - $len);
+		}
+		if ($lowercase) {
+			$hex = strtolower($hex);
+		}
+		return $hex;
+
+	}
+
 }

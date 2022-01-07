@@ -13,7 +13,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "ext-openssl": "*"
+    },
     "autoload": {
         "psr-4": {
             "OndraKoupil\\Tools\\": "src/"
