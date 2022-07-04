@@ -304,6 +304,18 @@ class StringsTestCase extends TestCase {
 
 	}
 
+	function testExcelToNumber() {
+
+		Assert::same(0, Strings::excelToNumber('a'));
+		Assert::same(4, Strings::excelToNumber('e'));
+		Assert::same(5, Strings::excelToNumber(' F '));
+		Assert::same(26, Strings::excelToNumber('aA'));
+		Assert::same(28, Strings::excelToNumber('aC'));
+		Assert::same(89, Strings::excelToNumber('CL'));
+		Assert::same(962, Strings::excelToNumber('AKA'));
+
+	}
+
 }
 
 

@@ -499,4 +499,21 @@ class Strings {
 
 	}
 
+	/**
+	 * Převede excelovské značení sloupců (a, b, c, ..., aa, ab, ac, ...) na zero-based (0, 1, 2, ..., 26, 27, 28, ...) číslování.
+	 * @param string $excelSloupec
+	 * @return int
+	 */
+	static function excelToNumber($excelSloupec) {
+		$excelSloupec = strtolower(trim($excelSloupec));
+		$cislo = 0;
+		while ($excelSloupec) {
+			$pismenko = $excelSloupec[0];
+			$cislo *= 26;
+			$cislo += ord($pismenko) - 96;
+			$excelSloupec = substr($excelSloupec, 1);
+		}
+		return $cislo - 1;
+	}
+
 }
