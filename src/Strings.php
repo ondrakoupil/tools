@@ -157,7 +157,7 @@ class Strings {
 	* @return string
 	*/
 	static function br2nl($input) {
-		return preg_replace('~<br\s*/?>~i', "\n", $input);
+		return preg_replace('~<br\s*/?>~i', "\n", $input ?: '');
 	}
 
 
@@ -167,8 +167,8 @@ class Strings {
 	* @return string
 	*/
 	static function nl2br($input) {
-		$input = str_replace("\r\n", "\n", $input);
-		return str_replace("\n", "<br />", $input);
+		$input = str_replace("\r\n", "\n", $input ?: '');
+		return str_replace("\n", "<br />", $input ?: '');
 	}
 
 	/**

@@ -92,6 +92,7 @@ class StringsTestCase extends TestCase {
 		Assert::equal("jeden\ndruhý", Strings::br2nl("jeden<br />druhý"));
 		Assert::equal("jeden\ndruhý\ntřetí", Strings::br2nl("jeden<br />druhý<br>třetí"));
 		Assert::equal("jeden\ndruhý\ntřetí", Strings::br2nl("jeden<BR  />druhý<BR>třetí"));
+		Assert::equal("", Strings::br2nl(null));
 	}
 
 	function testNl2br() {
@@ -239,13 +240,16 @@ class StringsTestCase extends TestCase {
 		Assert::same(110.3, Strings::number(" 110,3"));
 		Assert::same(10, Strings::number(" nonsense", 10));
 		Assert::same(10, Strings::number(" -10", 10, true));
+		Assert::same(20, Strings::number(20));
+		Assert::same(0, Strings::number(null));
+		Assert::same(15, Strings::number(null, 15));
+		Assert::same(20, Strings::number(array(10), 20));
 
 	}
 
 	function testNumberOnly() {
 		Assert::same("10;20", Strings::numberOnly(" a10,20", ",", ";"));
 	}
-
 
 	function testFormatSize() {
 		Assert::equal("1 B", Strings::formatSize(1));
