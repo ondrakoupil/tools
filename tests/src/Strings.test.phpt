@@ -119,6 +119,9 @@ class StringsTestCase extends TestCase {
 		Assert::equal("One two three four", Strings::shorten($str2, 19, ""));
 		Assert::equal("One two three four", Strings::shorten($str2, 20, ""));
 
+		$str3 = "A description of a cart item that is longer than 40 chars";
+		Assert::equal("A description of a cart item that is lon", Strings::shorten($str3, 40, "", true, true));
+
 		Assert::equal($str2, Strings::shorten($str2, 1000, "..."));
 
 		Assert::equal("One twoxxx", Strings::shorten($str2, 7, "xxx"));

@@ -137,12 +137,15 @@ class Strings {
 		}
 
 		$hardTrimmed = self::substr($text, 0, $length);
-		$nextChar = self::substr($text, $length, 1);
-		if (!preg_match('~[\s.,/\-]~', $nextChar)) {
-			$endingRemains = preg_match('~[\s.,/\-]([^\s.,/\-]*)$~', $hardTrimmed, $foundParts);
-			if ($endingRemains) {
-				$endingLength = self::strlen($foundParts[1]);
-				$hardTrimmed = self::substr($hardTrimmed, 0, -1 * $endingLength - 1);
+
+		if (!$ignoreWords) {
+			$nextChar = self::substr($text, $length, 1);
+			if (!preg_match('~[\s.,/\-]~', $nextChar)) {
+				$endingRemains = preg_match('~[\s.,/\-]([^\s.,/\-]*)$~', $hardTrimmed, $foundParts);
+				if ($endingRemains) {
+					$endingLength = self::strlen($foundParts[1]);
+					$hardTrimmed = self::substr($hardTrimmed, 0, -1 * $endingLength - 1);
+				}
 			}
 		}
 
