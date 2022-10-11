@@ -365,6 +365,7 @@ class Strings {
 	*/
 	static function number($string, $default = 0, $positiveOnly = false) {
 		if (is_bool($string) or is_object($string) or is_array($string)) return $default;
+		$string = (string)$string;
 		$string=str_replace(array(","," "),array(".",""),trim($string));
 		if (!is_numeric($string)) return $default;
 		$string = $string * 1; // Convert to number
@@ -442,6 +443,9 @@ class Strings {
 		$s = self::toAscii($s);
 		if ($lower) {
 			$s = strtolower($s);
+		}
+		if (!$charlist) {
+			$charlist = '';
 		}
 		$s = preg_replace('#[^a-z0-9' . preg_quote($charlist, '#') . ']+#i', '-', $s);
 		$s = trim($s, '-');
