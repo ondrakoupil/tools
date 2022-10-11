@@ -2,7 +2,7 @@
     "name": "ondrakoupil/tools",
     "description": "Just a bunch of tools for myself",
     "require-dev": {
-        "nette/tester": "2.4.x-dev"
+        "nette/tester": "~2.4"
     },
     "license": "MIT",
     "authors": [
