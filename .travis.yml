@@ -1,0 +1,31 @@
+dist: bionic
+
+language: php
+
+php:
+  # - '5.3' # Not supported anymore - min required is 5.4.8 because of SHA256 signing
+  # - '5.4' # Not supported by Travis anymore, but the library should work
+  # - '5.5' # Not supported by Travis anymore, but the library should work
+  # - '5.6'
+  # - '7.0'
+  - '7.1'
+  - '7.2'
+  - '7.3'
+  - '7.4'
+  - '8.0'
+  - '8.1'
+
+env:
+  - TESTER_PHP_BIN="php"
+
+before_install:
+  - composer self-update
+
+install:
+  - composer install --no-interaction --prefer-source
+
+script:
+  - ./vendor/bin/tester -p $TESTER_PHP_BIN -s ./tests/src
+
+after_failure:
+  - for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
