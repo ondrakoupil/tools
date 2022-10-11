@@ -302,7 +302,7 @@ class ToolsTest extends TestCase {
 		// Clear all
 		$dataArray = array(0, "", false);
 		Assert::same(
-			array(),
+			PHP_MAJOR_VERSION === 8 ? array('') : array(), // PHP 8 has different non-strict behaviour
 			Arrays::deleteValue($dataArray, 0)
 		);
 
@@ -492,7 +492,7 @@ class ToolsTest extends TestCase {
 		// Error because of non-scalar argument
 		Assert::error(function() use ($source) {
 			Arrays::deleteValues($source, array("0", "2", array("a")));
-		}, E_NOTICE);
+		}, PHP_MAJOR_VERSION === 8 ? E_WARNING : E_NOTICE);
 	}
 
 
