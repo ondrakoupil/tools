@@ -131,6 +131,8 @@ class Strings {
 		$text=trim($text);
 		if ($ending===true) $ending="&hellip;";
 
+		$text = trim($text);
+
 		$needsTrim = (self::strlen($text) > $length);
 		if (!$needsTrim) {
 			return $text;
@@ -150,6 +152,8 @@ class Strings {
 		}
 
 		$hardTrimmed .= $ending;
+
+		$hardTrimmed = trim($hardTrimmed);
 
 		return $hardTrimmed;
 	}

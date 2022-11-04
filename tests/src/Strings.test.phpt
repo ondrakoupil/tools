@@ -129,6 +129,12 @@ class StringsTestCase extends TestCase {
 		$str3 = "<b>One two</b> three four";;
 		Assert::equal("One two...", Strings::shorten($str3, 8, "..."));
 
+		$str4 = " This is a sentence with whitespaces ";;
+		Assert::equal("This is a sentence with whitespaces", Strings::shorten($str4, 100, "..."));
+
+		$str5 = " This has some  whitespaces ";;
+		Assert::equal("This has some", Strings::shorten($str5, 15, '', true, true));
+
 	}
 
 	function testReplaceEntities() {
