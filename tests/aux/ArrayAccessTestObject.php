@@ -3,6 +3,8 @@
 
 namespace OndraKoupil\Testing;
 
+use ReturnTypeWillChange;
+
 /**
  * Simple stub for testing ArrayAccess interfaces
  *
@@ -19,10 +21,11 @@ class ArrayAccessTestObject implements \ArrayAccess, \Countable {
 		return $this->data;
 	}
 
-	public function offsetExists($offset) {
+	public function offsetExists($offset): bool {
 		return isset($this->data[$offset]);
 	}
 
+	#[ReturnTypeWillChange]
 	public function offsetGet($offset) {
 		if (isset($this->data[$offset])) {
 			return $this->data[$offset];
@@ -30,7 +33,7 @@ class ArrayAccessTestObject implements \ArrayAccess, \Countable {
 		return null;
 	}
 
-	public function offsetSet($offset, $value) {
+	public function offsetSet($offset, $value): void {
 		if ($offset === null) {
 			$this->data[] = $value;
 		} else {
@@ -38,11 +41,11 @@ class ArrayAccessTestObject implements \ArrayAccess, \Countable {
 		}
 	}
 
-	public function offsetUnset($offset) {
+	public function offsetUnset($offset): void {
 		unset($this->data[$offset]);
 	}
 
-	public function count() {
+	public function count(): int {
 		return count($this->data);
 	}
 }
