@@ -492,8 +492,15 @@ class Strings {
 	 * @return string Skládá se z [a-zA-Z0-9] nebo [a-z0-9] při $lowercase === true
 	 */
 	public static function randomString($length, $lowercase = false) {
+
+		if ($length <= 0) {
+			$length = 32;
+		}
 		$bytesLength = ceil($length * 3/4) + 1;
 		$randomBytes = openssl_random_pseudo_bytes($bytesLength);
+		if (!$randomBytes) {
+			$randomBytes = md5(rand(10000000,99999999));
+		}
 		$hex = base64_encode($randomBytes);
 		$hex = preg_replace('~[/+=]~', '', $hex);
 		$len = strlen($hex);
