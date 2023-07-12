@@ -4,6 +4,7 @@ namespace OndraKoupil\Tools;
 
 use Closure;
 use Exception;
+use InvalidArgumentException;
 use ReflectionClass;
 
 class Objects {
@@ -77,6 +78,51 @@ class Objects {
 		}
 
 		return $obj;
+	}
+
+	public static function extractWithKeyPath($source, $keyPath, $separatorInKeyPath = '.') {
+		$keyPathSplit = explode($separatorInKeyPath, $keyPath);
+		return self::extractWithKeyPathStep($source, $keyPathSplit, 0);
+	}
+
+	protected static function extractWithKeyPathStep($sourceOfThisStep, $keyPathSplit, $keyPathPosition) {
+
+		if ($keyPathPosition >= 20) {
+			throw new Exception('Max recursion reached.');
+		}
+
+		if (!$keyPathSplit or count($keyPathSplit) < $keyPathPosition + 1) {
+			return $sourceOfThisStep;
+		}
+
+		$currentKeyPathPart = $keyPathSplit[$keyPathPosition];
+		$keyPathToThisPlace = array_slice($keyPathSplit, 0, $keyPathPosition + 1);
+
+		$arrayMode = false;
+		if (is_array($sourceOfThisStep)) {
+			$arrayMode = true;
+		} elseif (!is_object($sourceOfThisStep)) {
+			throw new InvalidArgumentException(implode('.', $keyPathToThisPlace) . ' is not an array or object in source data');
+		}
+
+		if ($arrayMode) {
+			if (!array_key_exists($currentKeyPathPart, $sourceOfThisStep)) {
+				throw new Exception(implode('.', $keyPathToThisPlace) . ' was not found in source array.');
+			}
+		} else {
+			if (!property_exists($sourceOfThisStep, $currentKeyPathPart)) {
+				throw new Exception(implode('.', $keyPathToThisPlace) . ' was not found in source object.');
+			}
+		}
+
+		if ($arrayMode) {
+			$nextSource = $sourceOfThisStep[$currentKeyPathPart];
+			return self::extractWithKeyPathStep($nextSource, $keyPathSplit, $keyPathPosition + 1);
+		} else {
+			$nextSource = $sourceOfThisStep->$currentKeyPathPart;
+			return self::extractWithKeyPathStep($nextSource, $keyPathSplit, $keyPathPosition + 1);
+		}
+
 	}
 
 }

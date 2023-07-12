@@ -2,6 +2,8 @@
 
 namespace OndraKoupil\Testing;
 
+use ReturnTypeWillChange;
+
 /**
  * Simple stub for testing Traversable interfaces
  *
@@ -22,6 +24,7 @@ class TraversableTestObject implements \Iterator {
 		$this->item = $item;
 	}
 
+	#[ReturnTypeWillChange]
 	public function current() {
 		if ($this->item === true) {
 			return $this->i;
@@ -29,18 +32,22 @@ class TraversableTestObject implements \Iterator {
 		return $this->item;
 	}
 
+	#[ReturnTypeWillChange]
 	public function key() {
 		return $this->i;
 	}
 
+	#[ReturnTypeWillChange]
 	public function next() {
 		return $this->i++;
 	}
 
+	#[ReturnTypeWillChange]
 	public function rewind() {
 		return $this->i=0;
 	}
 
+	#[ReturnTypeWillChange]
 	public function valid() {
 		return $this->i < $this->maxLength;
 	}
