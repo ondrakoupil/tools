@@ -793,6 +793,30 @@ class ToolsTest extends TestCase {
 
 	}
 
+
+	function testRemoveNumericAndNonNumericIndices() {
+		$arr = array(
+			0 => 'Hello',
+			1 => 'Dolly',
+			'5' => 'This',
+			'a' => 'is',
+			'bar' => 'Louis',
+			'100.0' => 'Are'
+		);
+
+		Assert::same(array(
+			0 => 'Hello',
+			1 => 'Dolly',
+			'5' => 'This',
+		), Arrays::removeNonNumericIndices($arr));
+
+		Assert::same(array(
+			'a' => 'is',
+			'bar' => 'Louis',
+			'100.0' => 'Are'
+		), Arrays::removeNumericIndices($arr));
+	}
+
 }
 
 

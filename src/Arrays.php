@@ -592,4 +592,17 @@ class Arrays {
 			array_slice($new, $nmax, $maxlen),
 			self::diff(array_slice($old, $omax + $maxlen), array_slice($new, $nmax + $maxlen)));
 	}
+
+	static function removeNumericIndices(array $array) {
+		return array_filter($array, function ($value, $key) {
+			return !preg_match('~^[0-9]+$~', $key);
+		}, ARRAY_FILTER_USE_BOTH);
+	}
+
+	static function removeNonNumericIndices(array $array) {
+		return array_filter($array, function ($value, $key) {
+			return preg_match('~^[0-9]+$~', $key);
+		}, ARRAY_FILTER_USE_BOTH);
+	}
+
 }
