@@ -815,6 +815,99 @@ class ToolsTest extends TestCase {
 			'bar' => 'Louis',
 			'100.0' => 'Are'
 		), Arrays::removeNumericIndices($arr));
+
+
+		$excelArray = array(
+			0 => 'A',
+			2 => 'A',
+			10 => 'A',
+			'A' => 'A',
+			'B' => 'A',
+			'c' => 'A',
+			'C' => 'A',
+			'd' => 'A',
+			'Z' => 'A',
+			'AA' => 'A',
+			'AB' => 'A',
+			'AC' => 'A',
+			'at' => 'A',
+			'hello' => 'A',
+			'dolly' => 'A',
+		);
+
+		Assert::same(array(
+			0 => 'A',
+			2 => 'A',
+			10 => 'A',
+			'c' => 'A',
+			'd' => 'A',
+			'AA' => 'A',
+			'AB' => 'A',
+			'AC' => 'A',
+			'at' => 'A',
+			'hello' => 'A',
+			'dolly' => 'A',
+		), Arrays::removeExcelIndices($excelArray));
+
+		Assert::same(array(
+			0 => 'A',
+			2 => 'A',
+			10 => 'A',
+			'c' => 'A',
+			'd' => 'A',
+			'at' => 'A',
+			'hello' => 'A',
+			'dolly' => 'A',
+		), Arrays::removeExcelIndices($excelArray, 'AZ'));
+
+
+		Assert::same(array(
+			0 => 'A',
+			2 => 'A',
+			10 => 'A',
+			'A' => 'A',
+			'B' => 'A',
+			'C' => 'A',
+			'Z' => 'A',
+			'AA' => 'A',
+			'AB' => 'A',
+			'AC' => 'A',
+			'at' => 'A',
+			'hello' => 'A',
+			'dolly' => 'A',
+		), Arrays::removeExcelIndices($excelArray, 'Z', false));
+
+
+		Assert::same(array(
+			0 => 'A',
+			2 => 'A',
+			10 => 'A',
+			'A' => 'A',
+			'B' => 'A',
+			'C' => 'A',
+			'Z' => 'A',
+			'AA' => 'A',
+			'AB' => 'A',
+			'AC' => 'A',
+			'hello' => 'A',
+			'dolly' => 'A',
+		), Arrays::removeExcelIndices($excelArray, 'AZ', false));
+
+		Assert::same(array(
+			0 => 'A',
+			2 => 'A',
+			10 => 'A',
+			'c' => 'A',
+			'C' => 'A',
+			'd' => 'A',
+			'Z' => 'A',
+			'AA' => 'A',
+			'AB' => 'A',
+			'AC' => 'A',
+			'at' => 'A',
+			'hello' => 'A',
+			'dolly' => 'A',
+		), Arrays::removeExcelIndices($excelArray, 'B'));
 	}
 
 }

@@ -605,4 +605,15 @@ class Arrays {
 		}, ARRAY_FILTER_USE_BOTH);
 	}
 
+	static function removeExcelIndices(array $array, $maxExcelIndex = 'Z', $uppercase = true) {
+		$maxIndex = Strings::excelToNumber($maxExcelIndex);
+		for ($i = 0; $i <= $maxIndex; $i++) {
+			$excelIndex = Strings::numberToExcel($i, true, $uppercase);
+			if (isset($array[$excelIndex])) {
+				unset($array[$excelIndex]);
+			}
+		}
+		return $array;
+	}
+
 }
