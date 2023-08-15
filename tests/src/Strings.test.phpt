@@ -320,12 +320,58 @@ class StringsTestCase extends TestCase {
 	function testExcelToNumber() {
 
 		Assert::same(0, Strings::excelToNumber('a'));
+		Assert::same(1, Strings::excelToNumber('a', false));
+		Assert::same(0, Strings::excelToNumber('A'));
+		Assert::same(1, Strings::excelToNumber('A', false));
 		Assert::same(4, Strings::excelToNumber('e'));
 		Assert::same(5, Strings::excelToNumber(' F '));
 		Assert::same(26, Strings::excelToNumber('aA'));
+		Assert::same(27, Strings::excelToNumber('AA', false));
 		Assert::same(28, Strings::excelToNumber('aC'));
 		Assert::same(89, Strings::excelToNumber('CL'));
+		Assert::same(90, Strings::excelToNumber('CL', false));
+		Assert::same(89, Strings::excelToNumber('CL'));
+		Assert::same(90, Strings::excelToNumber('CL', false));
 		Assert::same(962, Strings::excelToNumber('AKA'));
+
+	}
+
+	function testNumberToExcel() {
+
+		Assert::same('A', Strings::numberToExcel(0));
+		Assert::same('', Strings::numberToExcel(0, false));
+		Assert::same('', Strings::numberToExcel(-1, false));
+		Assert::same('', Strings::numberToExcel(-2, false));
+		Assert::same('', Strings::numberToExcel(-1));
+		Assert::same('', Strings::numberToExcel(-2));
+		Assert::same('A', Strings::numberToExcel(1, false));
+		Assert::same('B', Strings::numberToExcel(2, false));
+		Assert::same('C', Strings::numberToExcel(2));
+		Assert::same('b', Strings::numberToExcel(2, false, false));
+		Assert::same('c', Strings::numberToExcel(2, true, false));
+		Assert::same('C', Strings::numberToExcel(2));
+		Assert::same('B', Strings::numberToExcel(2, false));
+		Assert::same('C', Strings::numberToExcel(2));
+		Assert::same('B', Strings::numberToExcel(2, false));
+
+		Assert::same('AB', Strings::numberToExcel(27));
+		Assert::same('AA', Strings::numberToExcel(27, false));
+		Assert::same('Z', Strings::numberToExcel(26, false));
+		Assert::same('AA', Strings::numberToExcel(26));
+		Assert::same('Z', Strings::numberToExcel(25));
+		Assert::same('Y', Strings::numberToExcel(25, false));
+		Assert::same('AA', Strings::numberToExcel(27, false));
+		Assert::same('BA', Strings::numberToExcel(53, false));
+		Assert::same('BA', Strings::numberToExcel(52));
+		Assert::same('AZ', Strings::numberToExcel(51));
+		Assert::same('AZ', Strings::numberToExcel(52, false));
+		Assert::same('YZ', Strings::numberToExcel(676, false));
+		Assert::same('ZA', Strings::numberToExcel(677, false));
+		Assert::same('YZ', Strings::numberToExcel(675));
+		Assert::same('ZA', Strings::numberToExcel(676));
+
+		Assert::same('AKA', Strings::numberToExcel(962));
+		Assert::same('AJZ', Strings::numberToExcel(962, false));
 
 	}
 

@@ -517,21 +517,77 @@ class Strings {
 
 	}
 
+	private static $excelToNumberCache = array();
+
 	/**
 	 * Převede excelovské značení sloupců (a, b, c, ..., aa, ab, ac, ...) na zero-based (0, 1, 2, ..., 26, 27, 28, ...) číslování.
 	 * @param string $excelSloupec
+	 * @param bool $zeroBased
 	 * @return int
 	 */
-	static function excelToNumber($excelSloupec) {
+	static function excelToNumber($excelSloupec, bool $zeroBased = true) {
 		$excelSloupec = strtolower(trim($excelSloupec));
-		$cislo = 0;
-		while ($excelSloupec) {
-			$pismenko = $excelSloupec[0];
-			$cislo *= 26;
-			$cislo += ord($pismenko) - 96;
-			$excelSloupec = substr($excelSloupec, 1);
+
+		if (isset(self::$excelToNumberCache[$excelSloupec])) {
+			$cislo = self::$excelToNumberCache[$excelSloupec];
+		} else {
+			$cislo = 0;
+			while ($excelSloupec) {
+				$pismenko = $excelSloupec[0];
+				$cislo *= 26;
+				$cislo += ord($pismenko) - 96;
+				$excelSloupec = substr($excelSloupec, 1);
+			}
+			self::$excelToNumberCache[$excelSloupec] = $cislo;
 		}
-		return $cislo - 1;
+
+
+		if ($zeroBased) {
+			return $cislo - 1;
+		} else {
+			return $cislo;
+		}
+
+	}
+
+	private static $numberToExcelCache = array();
+
+	/**
+	 * Převede zero-based (0, 1, 2, ..., 26, 27, 28, ...) číslování na excelovské značené sloupců (A, B, C...).
+	 * @param int $excelNumber
+	 * @param bool $zeroBased
+	 * @param bool $upperCase
+	 * @return string
+	 * @see https://icesquare.com/wordpress/example-code-to-convert-a-number-to-excel-column-letter/
+	 */
+	static function numberToExcel($excelNumber, $zeroBased = true, $upperCase = true) {
+		$c = intval($excelNumber);
+		if ($zeroBased) {
+			$c += 1;
+		}
+
+		if ($c <= 0) return '';
+		
+		if (isset(self::$numberToExcelCache[$c])) {
+			$letter = self::$numberToExcelCache[$c];
+		} else {
+
+			$letter = '';
+
+			while ($c !== 0){
+				$p = ($c - 1) % 26;
+				$c = intval(($c - $p) / 26);
+				$letter = chr(65 + $p) . $letter;
+			}
+
+			self::$numberToExcelCache[$c] = $letter;
+		}
+
+		if (!$upperCase) {
+			$letter = strtolower($letter);
+		}
+
+		return $letter;
 	}
 
 }
