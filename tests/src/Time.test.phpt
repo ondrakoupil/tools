@@ -51,6 +51,12 @@ class TimeTest extends Tester\TestCase {
 			Time::convert("nonsense");
 		}, '\InvalidArgumentException');
 
+		Assert::exception(function() {
+			Time::convert(null, Time::PHP, false);
+		}, '\InvalidArgumentException');
+		
+		Assert::same(null, Time::convert(null, Time::PHP, true));
+		
 	}
 
 	public function testConvertInterval() {

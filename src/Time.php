@@ -3,6 +3,7 @@
 namespace OndraKoupil\Tools;
 
 use DateInterval;
+use DateTime;
 
 class Time {
 
@@ -62,17 +63,21 @@ class Time {
     const YEAR = 31557600;
 
 
-
 	/**
 	 * Konverze časového údaje do různých formátů.
-	 * @param bool|int|string|\DateTime $input Vstupní čas. False = aktuální čas.
+	 *
+	 * @param bool|int|string|DateTime|null $input Vstupní čas. False = aktuální čas.
 	 * @param int $outputFormat Konstanty
-	 * @return \DateTime|string|int
-	 * @throws \InvalidArgumentException
+	 * @param bool $allowNull
+	 *
+	 * @return DateTime|string|int
 	 */
-	static function convert($input,$outputFormat=self::PHP) {
+	static function convert($input,$outputFormat=self::PHP, $allowNull = true) {
 		if ($input===false) {
 			$input=time();
+		}
+		if ($input === null and $allowNull) {
+			return null;
 		}
 
 		if ($input instanceof \DateTime) {
@@ -86,8 +91,10 @@ class Time {
 			$origInput = $input;
 			$input=@strtotime($input);
 			if ($input === false or $input === -1) {
-				$input = str_replace(" ","",$origInput); // Helps with formats like 13. 5. 2013
-				$input=@strtotime($input);
+				if ($origInput) {
+					$input = str_replace(" ","",$origInput); // Helps with formats like 13. 5. 2013
+					$input=@strtotime($input);
+				}
 				if ($input === false or $input === -1) {
 					throw new \InvalidArgumentException("Invalid input to Time::convert: $origInput");
 				}
