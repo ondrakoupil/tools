@@ -76,6 +76,80 @@ class UrlTestCase extends TestCase {
 
 	}
 
+	function testHumanize() {
+
+		$url = 'https://www.hranostaj.cz/hra1223';
+		Assert::same('www.hranostaj.cz', Url::humanize($url));
+
+		$url = 'https://www.hranostaj.cz/hra1223/some/other/stuff';
+		Assert::same('www.hranostaj.cz', Url::humanize($url));
+
+		$url = 'http://hranostaj.cz/hra1223/some?params=that&are=very%12compli%20%39cated';
+		Assert::same('hranostaj.cz', Url::humanize($url));
+
+		$url = 'ftp://123.11.13.23/folder/file';
+		Assert::same('123.11.13.23', Url::humanize($url));
+
+		$url = 'https://seznam.cz';
+		Assert::same('seznam.cz', Url::humanize($url));
+
+		$url = 'https://praha.prodejna.cz';
+		Assert::same('praha.prodejna.cz', Url::humanize($url));
+
+		$url = 'praha.prodejna.cz/kontakty';
+		Assert::same('praha.prodejna.cz', Url::humanize($url));
+
+		$url = 'https://seznam.cz?utm=campaign';
+		Assert::same('seznam.cz', Url::humanize($url));
+
+		$url = 'idnes.cz/novinky/blaboly/pakarny';
+		Assert::same('idnes.cz', Url::humanize($url));
+
+		$url = 'idnes.cz?kecy&skvar&reklamy';
+		Assert::same('idnes.cz', Url::humanize($url));
+
+		$url = 'www.novinky.cz';
+		Assert::same('www.novinky.cz', Url::humanize($url));
+
+		$url = 'hranostaj.cz';
+		Assert::same('hranostaj.cz', Url::humanize($url));
+
+		$url = 'asdfasfasdf';
+		Assert::same('asdfasfasdf', Url::humanize($url));
+
+		$url = 'https://t.co/abcde11234';
+		Assert::same('t.co/abcde11234', Url::humanize($url));
+
+		$url = 'https://bit.ly/xx918273';
+		Assert::same('bit.ly/xx918273', Url::humanize($url));
+
+		$url = 'https://bit.ly/xx918273';
+		Assert::same('bit.ly', Url::humanize($url, 2));
+
+		$url = 'https://www.hranostaj.cz/hra1234';
+		Assert::same('www.hranostaj.cz/hra1234', Url::humanize($url, 20));
+
+	}
+
+	function testTechnicalize() {
+
+		$url = 'hranostaj.cz';
+		Assert::same('https://hranostaj.cz', Url::technicalize($url));
+
+		$url = 'hranostaj.cz';
+		Assert::same('ftp://hranostaj.cz', Url::technicalize($url, 'ftp'));
+
+		$url = 'http://www.hranostaj.cz/xxssyy';
+		Assert::same($url, Url::technicalize($url, 'ftp'));
+
+		$url = 'http://www.hranostaj.cz/xxssyy?dfasdf';
+		Assert::same($url, Url::technicalize($url));
+
+		$url = 'hranostaj.cz?utm=campaign&medium=andrej';
+		Assert::same('https://hranostaj.cz?utm=campaign&medium=andrej', Url::technicalize($url));
+
+	}
+
 }
 
 $case = new UrlTestCase();
