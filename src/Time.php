@@ -4,6 +4,7 @@ namespace OndraKoupil\Tools;
 
 use DateInterval;
 use DateTime;
+use InvalidArgumentException;
 
 class Time {
 
@@ -96,7 +97,7 @@ class Time {
 					$input=@strtotime($input);
 				}
 				if ($input === false or $input === -1) {
-					throw new \InvalidArgumentException("Invalid input to Time::convert: $origInput");
+					throw new InvalidArgumentException("Invalid input to Time::convert: $origInput");
 				}
 			}
 		}
@@ -205,4 +206,39 @@ class Time {
 
 		return $i;
 	}
+
+
+	/**
+	 * Zkonvertuje vstup na DateInterval objekt:
+	 * - string = pokusí se vytvořit nový DateInterval se zadaným stringem
+	 * - int = počet sekund
+	 * - DateInterval = rovnou ho vrátí
+	 * - null = pokud je $allowNull, tak vrátí zase null
+	 *
+	 * Jinak vyhodí InvalidArgumentException
+	 *
+	 * @param string|DateInterval|int|null $input
+	 * @param bool $allowNull
+	 *
+	 * @return DateInterval|null
+	 * @throws InvalidArgumentException
+	 */
+	static function createInterval($input, $allowNull = true) {
+		if ($input === null and $allowNull) {
+			return null;
+		}
+		if (is_string($input)) {
+			return new DateInterval($input);
+		}
+		if ($input instanceof DateInterval) {
+			return $input;
+		}
+		if (is_numeric($input)) {
+			return new DateInterval('PT' . $input . 'S');
+		}
+
+		throw new InvalidArgumentException("Invalid input to Time::createInterval" . (is_string($input) ? (': ' . $input) : ''));
+
+	}
+
 }

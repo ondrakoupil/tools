@@ -120,6 +120,49 @@ class TimeTest extends Tester\TestCase {
 
 	}
 
+	public function testCreateInterval() {
+
+		$input = 'P10D';
+		$interval = Time::createInterval($input);
+		Assert::same(DateInterval::class, get_class($interval));
+		Assert::same(10, $interval->d);
+		Assert::same(0, $interval->m);
+
+		$input = 'PT1M';
+		$interval = Time::createInterval($input);
+		Assert::same(DateInterval::class, get_class($interval));
+		Assert::same(1, $interval->i);
+		Assert::same(0, $interval->s);
+		Assert::same(0, $interval->d);
+		Assert::same(0, $interval->m);
+		Assert::same('0', $interval->format('%s'));
+		Assert::same('1', $interval->format('%i'));
+
+		$interval2 = Time::createInterval($interval);
+		Assert::same($interval, $interval2);
+
+		$input = 120;
+		$interval = Time::createInterval($input);
+		Assert::same(DateInterval::class, get_class($interval));
+		Assert::same(120, $interval->s);
+		Assert::same('120', $interval->format('%s'));
+
+		Assert::null(Time::createInterval(null, true));
+
+		Assert::exception(function () {
+			Time::createInterval(null, false);
+		}, InvalidArgumentException::class);
+
+		Assert::exception(function () {
+			Time::createInterval(true);
+		}, InvalidArgumentException::class);
+
+		Assert::exception(function () {
+			Time::createInterval('XYZ');
+		}, Exception::class);
+
+	}
+
 }
 
 $test = new TimeTest();
