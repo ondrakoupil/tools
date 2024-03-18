@@ -163,6 +163,55 @@ class TimeTest extends Tester\TestCase {
 
 	}
 
+	public function testCompareInterval() {
+
+		$i1 = new DateInterval('PT10M');
+		$i2 = new DateInterval('PT20M');
+		Assert::same(-1, Time::compareIntervals($i1, $i2));
+
+		$i1 = new DateInterval('P10D');
+		$i2 = new DateInterval('P3M');
+		Assert::same(-1, Time::compareIntervals($i1, $i2));
+
+		$i1 = new DateInterval('P1D');
+		$i2 = new DateInterval('PT10M');
+		Assert::same(1, Time::compareIntervals($i1, $i2));
+
+		$i1 = new DateInterval('PT1M');
+		$i2 = new DateInterval('PT1M');
+		Assert::same(0, Time::compareIntervals($i1, $i2));
+
+		$i1 = new DateInterval('PT60S');
+		$i2 = new DateInterval('PT1M');
+		Assert::same(0, Time::compareIntervals($i1, $i2));
+
+	}
+
+	public function testDiffInterval() {
+
+		$i1 = new DateInterval('PT1M');
+		$i2 = new DateInterval('PT2M');
+		Assert::same(60, Time::diffIntervals($i1, $i2));
+
+		$i1 = new DateInterval('PT1H');
+		$i2 = new DateInterval('PT30M');
+		Assert::same(1800, Time::diffIntervals($i1, $i2));
+
+		$i1 = new DateInterval('PT5M');
+		$i2 = new DateInterval('PT300S');
+		Assert::same(0, Time::diffIntervals($i1, $i2));
+
+		$i1 = new DateInterval('PT10M');
+		$i2 = new DateInterval('PT9M');
+		Assert::same(60, Time::diffIntervals($i1, $i2, false));
+
+		$i1 = new DateInterval('PT9M');
+		$i2 = new DateInterval('PT10M');
+		Assert::same(-60, Time::diffIntervals($i1, $i2, false));
+
+
+	}
+
 }
 
 $test = new TimeTest();

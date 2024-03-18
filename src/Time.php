@@ -4,6 +4,7 @@ namespace OndraKoupil\Tools;
 
 use DateInterval;
 use DateTime;
+use DateTimeImmutable;
 use InvalidArgumentException;
 
 class Time {
@@ -239,6 +240,43 @@ class Time {
 
 		throw new InvalidArgumentException("Invalid input to Time::createInterval" . (is_string($input) ? (': ' . $input) : ''));
 
+	}
+
+	/**
+	 * Porovná délku dvou DateInterval objektů
+	 *
+	 * @param DateInterval $i1
+	 * @param DateInterval $i2
+	 *
+	 * @return int -1 = $i1 je kratší. 0 = jsou stejné. +1 = $i1 je delší.
+	 */
+	static function compareIntervals(DateInterval $i1, DateInterval $i2): int {
+		$dateRef = new DateTimeImmutable();
+		$dateRef2 = clone($dateRef);
+		$dateResult1 = $dateRef->add($i1);
+		$dateResult2 = $dateRef2->add($i2);
+		return $dateResult1 <=> $dateResult2;
+	}
+
+	/**
+	 * Spočítá rozdíl dvou DateInterval objektů v sekundách.
+	 *
+	 * @param DateInterval $i1
+	 * @param DateInterval $i2
+	 * @param bool $abs Absolutní rozdíl délek.
+	 *
+	 * @return int Počet sekund
+	 */
+	static function diffIntervals(DateInterval $i1, DateInterval $i2, $abs = true): int {
+		$dateRef = new DateTimeImmutable();
+		$dateRef2 = clone($dateRef);
+		$dateResult1 = $dateRef->add($i1);
+		$dateResult2 = $dateRef2->add($i2);
+		$diff = $dateResult1->getTimestamp() - $dateResult2->getTimestamp();
+		if ($abs) {
+			return abs($diff);
+		}
+		return $diff;
 	}
 
 }
