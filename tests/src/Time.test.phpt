@@ -185,6 +185,26 @@ class TimeTest extends Tester\TestCase {
 		$i2 = new DateInterval('PT1M');
 		Assert::same(0, Time::compareIntervals($i1, $i2));
 
+		$date1 = new DateTime('2024-01-10 10:00:00');
+		$date2 = new DateTime('2024-01-10 10:05:00');
+		$date3 = new DateTime('2024-01-10 10:08:00');
+
+		$i1 = $date1->diff($date2);
+		$i2 = $date2->diff($date1);
+		Assert::same(0, Time::compareIntervals($i1, $i2));
+		Assert::same(0, Time::compareIntervals($i2, $i1));
+
+		$i1 = $date1->diff($date3);
+		$i2 = $date1->diff($date2);
+		Assert::same(1, Time::compareIntervals($i1, $i2));
+		Assert::same(-1, Time::compareIntervals($i2, $i1));
+
+		$i1 = $date3->diff($date1);
+		$i2 = $date2->diff($date1);
+		Assert::same(1, Time::compareIntervals($i1, $i2));
+		Assert::same(-1, Time::compareIntervals($i2, $i1));
+
+
 	}
 
 	public function testDiffInterval() {
@@ -196,18 +216,39 @@ class TimeTest extends Tester\TestCase {
 		$i1 = new DateInterval('PT1H');
 		$i2 = new DateInterval('PT30M');
 		Assert::same(1800, Time::diffIntervals($i1, $i2));
+		Assert::same(1800, Time::diffIntervals($i2, $i1));
 
 		$i1 = new DateInterval('PT5M');
 		$i2 = new DateInterval('PT300S');
 		Assert::same(0, Time::diffIntervals($i1, $i2));
+		Assert::same(0, Time::diffIntervals($i2, $i1));
 
 		$i1 = new DateInterval('PT10M');
 		$i2 = new DateInterval('PT9M');
 		Assert::same(60, Time::diffIntervals($i1, $i2, false));
+		Assert::same(-60, Time::diffIntervals($i2, $i1, false));
 
 		$i1 = new DateInterval('PT9M');
 		$i2 = new DateInterval('PT10M');
 		Assert::same(-60, Time::diffIntervals($i1, $i2, false));
+		Assert::same(60, Time::diffIntervals($i2, $i1, false));
+
+		$date1 = new DateTime('2024-01-10 10:00:00');
+		$date2 = new DateTime('2024-01-10 10:05:00');
+		$date3 = new DateTime('2024-01-10 10:08:00');
+
+		$i1 = $date1->diff($date2);
+		$i2 = $date1->diff($date3);
+		Assert::same(180, Time::diffIntervals($i2, $i1));
+		Assert::same(180, Time::diffIntervals($i1, $i2));
+		Assert::same(-180, Time::diffIntervals($i1, $i2, false));
+
+		$i1 = $date2->diff($date1);
+		$i2 = $date3->diff($date1);
+		Assert::same(180, Time::diffIntervals($i2, $i1));
+		Assert::same(180, Time::diffIntervals($i1, $i2));
+		Assert::same(-180, Time::diffIntervals($i1, $i2, false));
+
 
 
 	}

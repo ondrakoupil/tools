@@ -251,15 +251,21 @@ class Time {
 	 * @return int -1 = $i1 je kratší. 0 = jsou stejné. +1 = $i1 je delší.
 	 */
 	static function compareIntervals(DateInterval $i1, DateInterval $i2): int {
+		$myI1 = clone $i1;
+		$myI2 = clone $i2;
+		$myI1->invert = 0;
+		$myI2->invert = 0;
 		$dateRef = new DateTimeImmutable();
 		$dateRef2 = clone($dateRef);
-		$dateResult1 = $dateRef->add($i1);
-		$dateResult2 = $dateRef2->add($i2);
+		$dateResult1 = $dateRef->add($myI1);
+		$dateResult2 = $dateRef2->add($myI2);
 		return $dateResult1 <=> $dateResult2;
 	}
 
 	/**
 	 * Spočítá rozdíl dvou DateInterval objektů v sekundách.
+	 *
+	 * $i1 mínus $i2. Pokud je $abs false, tak výsledek je záporný, pokud je $i1 kratší než $i2
 	 *
 	 * @param DateInterval $i1
 	 * @param DateInterval $i2
@@ -270,8 +276,12 @@ class Time {
 	static function diffIntervals(DateInterval $i1, DateInterval $i2, $abs = true): int {
 		$dateRef = new DateTimeImmutable();
 		$dateRef2 = clone($dateRef);
-		$dateResult1 = $dateRef->add($i1);
-		$dateResult2 = $dateRef2->add($i2);
+		$myI1 = clone $i1;
+		$myI2 = clone $i2;
+		$myI1->invert = 0;
+		$myI2->invert = 0;
+		$dateResult1 = $dateRef->add($myI1);
+		$dateResult2 = $dateRef2->add($myI2);
 		$diff = $dateResult1->getTimestamp() - $dateResult2->getTimestamp();
 		if ($abs) {
 			return abs($diff);
