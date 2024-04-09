@@ -517,6 +517,27 @@ class Strings {
 
 	}
 
+	/**
+	 * Vygeneruje náhodný alfanumerický řetezec složený z číslic a velkých písmen, které se nemohou snadno poplést (např. 0 a O).
+	 * Vhodné pro hesla nebo jednorázové kódy.
+	 *
+	 * @param int $length
+	 *
+	 * @return string
+	 */
+	public static function randomTypoProofCode($length) {
+
+		$letters = array('A', 'B', 'C', 'E', 'F', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'X', 'Y', '3', '4', '6', '7', '8');
+		$len = count($letters) - 1;
+		$str = '';
+		for ($i = 0; $i < $length; $i++) {
+			$rand = mt_rand(0, $len);
+			$str .= $letters[$rand];
+		}
+		return $str;
+
+	}
+
 	private static $excelToNumberCache = array();
 
 	/**

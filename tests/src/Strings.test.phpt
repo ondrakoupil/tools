@@ -375,6 +375,18 @@ class StringsTestCase extends TestCase {
 
 	}
 
+	function testRandomTypoProofCode() {
+
+		for ($i = 0; $i < 20; $i++) {
+			$len = 50 + 2 * $i;
+			$code = Strings::randomTypoProofCode($len);
+			Assert::same($len, strlen($code));
+			Assert::same(1, preg_match('/^[A-Z0-9]{' . $len . '}$/', $code));
+			Assert::same(0, preg_match('/[0oil1g9]]/i', $code));
+		}
+
+	}
+
 }
 
 
