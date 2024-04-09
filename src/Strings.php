@@ -538,6 +538,27 @@ class Strings {
 
 	}
 
+	/**
+	 * Vygeneruje náhodný číselný řetězec o zadané délce.
+	 *
+	 * @param int $length
+	 *
+	 * @return string
+	 */
+	public static function randomNumericCode($length) {
+
+		$letters = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0');
+		$len = count($letters) - 1;
+		$str = '';
+		for ($i = 0; $i < $length; $i++) {
+			$rand = mt_rand(0, $len);
+			$str .= $letters[$rand];
+		}
+		return $str;
+
+	}
+
+
 	private static $excelToNumberCache = array();
 
 	/**

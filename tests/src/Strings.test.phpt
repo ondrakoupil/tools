@@ -387,6 +387,17 @@ class StringsTestCase extends TestCase {
 
 	}
 
+	function testRandomNumericCode() {
+
+		for ($i = 0; $i < 20; $i++) {
+			$len = 50 + 2 * $i;
+			$code = Strings::randomNumericCode($len);
+			Assert::same($len, strlen($code));
+			Assert::same(1, preg_match('/^[0-9]{' . $len . '}$/', $code));
+		}
+
+	}
+
 }
 
 
